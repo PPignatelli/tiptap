@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, { apiVersion: '2023-10-16' })
 
-const PLATFORM_FEE_PERCENT = 10 // 10% commission
+const PLATFORM_FEE_PERCENT = 10
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -17,34 +17,43 @@ serve(async (req) => {
   }
 
   try {
-    const { amount, profile_id, tipper_name, tipper_message } = await req.json()
+    const { card_id } = await req.json()
 
-    if (!amount || amount < 100) throw new Error('Montant minimum : 1,00 EUR')
-    if (!profile_id) throw new Error('Profil manquant')
-
-    // Calculate platform fee
-    const platformFee = Math.round(amount * PLATFORM_FEE_PERCENT / 100)
+    if (!card_id) throw new Error('card_id manquant')
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    // Look up profile for Stripe Connect info
+    // Get card details
+    const { data: cardData, error: cardErr } = await supabase
+      .from('cards')
+      .select('id, owner_id, price, title')
+      .eq('id', card_id)
+      .single()
+
+    if (cardErr || !cardData) throw new Error('Carte introuvable')
+
+    const amount = cardData.price
+    if (amount < 100) throw new Error('Montant minimum : 1,00 EUR')
+
+    const platformFee = Math.round(amount * PLATFORM_FEE_PERCENT / 100)
+
+    // Look up owner's Stripe Connect account
     const { data: profileData } = await supabase
       .from('profiles')
       .select('stripe_account_id, stripe_onboarded')
-      .eq('id', profile_id)
+      .eq('id', cardData.owner_id)
       .single()
 
-    // Build PaymentIntent params
+    // Build PaymentIntent
     const piParams: Record<string, any> = {
       amount,
       currency: 'eur',
       metadata: {
-        profile_id,
-        tipper_name: tipper_name || 'Anonyme',
-        tipper_message: tipper_message || '',
+        card_id: cardData.id,
+        owner_id: cardData.owner_id,
         platform_fee: platformFee.toString(),
         net_amount: (amount - platformFee).toString(),
       },
@@ -53,8 +62,7 @@ serve(async (req) => {
       },
     }
 
-    // If recipient has connected Stripe → destination charges
-    // 90% goes to their bank, 10% stays on platform (Stripe fees deducted from platform's 10%)
+    // Destination charges if owner has connected Stripe
     if (profileData?.stripe_onboarded && profileData?.stripe_account_id) {
       piParams.transfer_data = {
         destination: profileData.stripe_account_id,
@@ -63,18 +71,6 @@ serve(async (req) => {
     }
 
     const paymentIntent = await stripe.paymentIntents.create(piParams)
-
-    // Create tip record in Supabase (pending)
-    await supabase.from('tips').insert({
-      profile_id,
-      amount,
-      platform_fee: platformFee,
-      net_amount: amount - platformFee,
-      stripe_payment_intent_id: paymentIntent.id,
-      tipper_name: tipper_name || null,
-      tipper_message: tipper_message || null,
-      status: 'pending',
-    })
 
     return new Response(
       JSON.stringify({ clientSecret: paymentIntent.client_secret }),
