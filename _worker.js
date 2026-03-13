@@ -2,14 +2,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // /c/anything → serve tip.html (keep the URL as-is)
+    // /c/anything → serve tip.html (keep the original URL path for JS to read)
     if (url.pathname.startsWith('/c/')) {
-      url.pathname = '/tip.html';
-      const response = await env.ASSETS.fetch(new Request(url, request));
-      return new Response(response.body, {
-        status: 200,
-        headers: response.headers,
-      });
+      const tipUrl = new URL(request.url);
+      tipUrl.pathname = '/tip.html';
+      return env.ASSETS.fetch(tipUrl);
     }
 
     // Everything else → serve normally
