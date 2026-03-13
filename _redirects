@@ -1,6 +1,6 @@
+/c/* /tip.html?c=:splat 200
 /dashboard /dashboard.html 200
 /confirm /confirm.html 200
 /reset-password /reset-password.html 200
 /terms /terms.html 200
 /privacy /privacy.html 200
-/:slug /tip.html?c=:slug 200

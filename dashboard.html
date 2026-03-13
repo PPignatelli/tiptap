@@ -515,7 +515,7 @@
     function updateSlugPreview() {
       const raw = document.getElementById('cardSlug').value.trim();
       const slug = sanitizeSlug(raw) || '...';
-      document.getElementById('slugUrl').textContent = window.location.origin + '/' + slug;
+      document.getElementById('slugUrl').textContent = window.location.origin + '/c/' + slug;
     }
 
     function sanitizeSlug(str) {
@@ -608,7 +608,7 @@
 
     // ========== COPY LINK ==========
     function copyLink(slug) {
-      const url = window.location.origin + '/' + encodeURIComponent(slug);
+      const url = window.location.origin + '/c/' + encodeURIComponent(slug);
       navigator.clipboard.writeText(url).then(() => {
         showToast('Lien copié !', 'success');
       });
