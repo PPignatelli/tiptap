@@ -581,7 +581,6 @@
         // 3. Insert card
         const title = document.getElementById('cardTitle').value.trim() || null;
         const { error: insertErr } = await sb.from('cards').insert({
-          owner_id: currentUser.id,
           media_url: mediaUrl,
           media_type: mediaType,
           price: price,
