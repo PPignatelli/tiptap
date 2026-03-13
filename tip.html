@@ -100,33 +100,40 @@
     .pay-buttons { display: flex; flex-direction: column; gap: 12px; }
 
     .btn-apple-pay, .btn-google-pay {
-      width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm);
-      font-size: 16px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 18px; border: none; border-radius: var(--radius-sm);
+      font-size: 18px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
       transition: all var(--duration);
       letter-spacing: -0.2px;
+      min-height: 56px;
     }
 
     .btn-apple-pay {
       background: #000; color: #fff;
     }
     .btn-apple-pay:hover { background: #1a1a1a; }
+    .btn-apple-pay:active { transform: scale(0.98); }
     [data-theme="dark"] .btn-apple-pay { background: #fff; color: #000; }
     [data-theme="dark"] .btn-apple-pay:hover { background: #e5e5e5; }
 
     .btn-google-pay {
-      background: var(--color-surface);
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
+      background: #fff; color: #3c4043;
+      border: 1px solid #dadce0;
     }
-    .btn-google-pay:hover { background: var(--color-surface-inset); }
+    .btn-google-pay:hover { background: #f8f9fa; }
+    .btn-google-pay:active { transform: scale(0.98); }
+    [data-theme="dark"] .btn-google-pay {
+      background: #3c4043; color: #fff; border-color: #5f6368;
+    }
+    [data-theme="dark"] .btn-google-pay:hover { background: #4a4d51; }
 
-    .btn-apple-pay svg, .btn-google-pay svg { height: 20px; }
+    .btn-apple-pay svg { height: 22px; }
+    .btn-google-pay svg { height: 22px; }
 
     /* Divider */
     .divider {
       display: flex; align-items: center; gap: 12px;
-      margin: 16px 0;
+      margin: 4px 0;
       color: var(--color-text-tertiary); font-size: 13px;
     }
     .divider::before, .divider::after {
@@ -135,12 +142,13 @@
     }
 
     .btn-card-pay {
-      width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm);
+      width: 100%; padding: 16px; border: none; border-radius: var(--radius-sm);
       background: var(--brand); color: white;
       font-size: 16px; font-weight: 700; cursor: pointer;
       transition: all var(--duration);
     }
     .btn-card-pay:hover { background: var(--brand-hover); }
+    .btn-card-pay:active { transform: scale(0.98); }
 
     /* Success state */
     .success-msg {
@@ -218,14 +226,14 @@
       </div>
 
       <div class="pay-buttons" id="payButtons">
-        <!-- Apple Pay (hidden until availability check) -->
-        <button class="btn-apple-pay" id="btnApplePay" style="display:none" onclick="handlePay('apple')">
+        <!-- Apple Pay — always visible -->
+        <button class="btn-apple-pay" id="btnApplePay" onclick="handlePay('apple')">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.52-3.23 0-1.44.62-2.2.44-3.06-.4C3.79 16.17 4.36 9.43 8.7 9.17c1.23.06 2.09.7 2.81.73.99-.2 1.93-.77 2.98-.7 1.27.1 2.22.6 2.84 1.53-2.6 1.54-1.98 4.94.37 5.89-.46 1.2-1.07 2.38-2.14 3.55l1.49.11zM12.03 9.12c-.13-2.27 1.72-4.14 3.92-4.32.28 2.52-2.28 4.43-3.92 4.32z"/></svg>
           Apple Pay
         </button>
 
-        <!-- Google Pay (hidden until availability check) -->
-        <button class="btn-google-pay" id="btnGooglePay" style="display:none" onclick="handlePay('google')">
+        <!-- Google Pay — always visible -->
+        <button class="btn-google-pay" id="btnGooglePay" onclick="handlePay('google')">
           <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google Pay
         </button>
@@ -339,6 +347,7 @@
     // ========== STRIPE SETUP ==========
     const stripeInstance = Stripe(STRIPE_PK);
     let paymentRequest = null;
+    let nativePayAvailable = false;
     let stripeElements = null;
     let paymentElement = null;
     let clientSecret = null;
@@ -364,7 +373,6 @@
       }
 
       // 2. Setup Payment Request API (Apple Pay / Google Pay)
-      const priceEur = card.price / 100;
       paymentRequest = stripeInstance.paymentRequest({
         country: 'BE',
         currency: 'eur',
@@ -376,31 +384,17 @@
         requestPayerEmail: false,
       });
 
-      // Check if Apple Pay / Google Pay is available
-      const canMakePayment = await paymentRequest.canMakePayment();
+      // Check availability silently
+      const canMake = await paymentRequest.canMakePayment();
+      nativePayAvailable = !!canMake;
 
-      if (canMakePayment) {
-        // Show native buttons, hide fallbacks initially
-        if (canMakePayment.applePay) {
-          document.getElementById('btnApplePay').style.display = 'flex';
-        }
-        if (canMakePayment.googlePay) {
-          document.getElementById('btnGooglePay').style.display = 'flex';
-        }
-      } else {
-        // No native pay available, hide Apple/Google buttons
-        document.getElementById('btnApplePay').style.display = 'none';
-        document.getElementById('btnGooglePay').style.display = 'none';
-      }
-
-      // Handle Payment Request token
+      // Handle native payment completion
       paymentRequest.on('paymentmethod', async (ev) => {
         const { error: confirmError } = await stripeInstance.confirmCardPayment(
           clientSecret,
           { payment_method: ev.paymentMethod.id },
           { handleActions: false }
         );
-
         if (confirmError) {
           ev.complete('fail');
           showToast('Paiement refusé', 'error');
@@ -414,16 +408,29 @@
       stripeElements = stripeInstance.elements({ clientSecret });
       paymentElement = stripeElements.create('payment', {
         layout: 'tabs',
-        wallets: { applePay: 'never', googlePay: 'never' } // handled by Payment Request
+        wallets: { applePay: 'never', googlePay: 'never' }
       });
     }
 
     // ========== PAY HANDLERS ==========
     function handlePay(method) {
+      if (!clientSecret) {
+        showToast('Chargement du paiement...', 'error');
+        return;
+      }
+
       if (method === 'apple' || method === 'google') {
-        // Trigger native payment sheet
-        if (paymentRequest) paymentRequest.show();
-      } else if (method === 'card') {
+        if (nativePayAvailable && paymentRequest) {
+          // Device supports native pay → show payment sheet
+          paymentRequest.show();
+        } else {
+          // Fallback → show card form with a message
+          showToast(method === 'apple'
+            ? 'Apple Pay non disponible sur cet appareil. Utilisez la carte.'
+            : 'Google Pay non disponible sur cet appareil. Utilisez la carte.', 'error');
+          showCardForm();
+        }
+      } else {
         showCardForm();
       }
     }
@@ -433,17 +440,16 @@
       buttons.innerHTML = `
         <div id="stripePaymentElement" style="margin-bottom:16px;"></div>
         <button class="btn-card-pay" id="btnConfirmCard" onclick="confirmCardPayment()">Payer</button>
-        <button class="btn-cancel-pay" onclick="cancelCardForm()" style="
-          margin-top:8px;width:100%;padding:10px;border:1px solid var(--color-border);
+        <button onclick="cancelCardForm()" style="
+          margin-top:8px;width:100%;padding:12px;border:1px solid var(--color-border);
           border-radius:var(--radius-sm);background:none;color:var(--color-text-secondary);
           font-size:14px;cursor:pointer;font-weight:600;
-        ">Annuler</button>
+        ">Retour</button>
       `;
       paymentElement.mount('#stripePaymentElement');
     }
 
     function cancelCardForm() {
-      // Re-render original buttons
       renderPayButtons();
     }
 
@@ -455,7 +461,7 @@
       const { error } = await stripeInstance.confirmPayment({
         elements: stripeElements,
         confirmParams: {
-          return_url: window.location.href + '&paid=1',
+          return_url: window.location.href + (window.location.search ? '&' : '?') + 'paid=1',
         },
         redirect: 'if_required',
       });
@@ -479,24 +485,17 @@
     function renderPayButtons() {
       const buttons = document.getElementById('payButtons');
       buttons.innerHTML = `
-        <button class="btn-apple-pay" id="btnApplePay" style="display:none" onclick="handlePay('apple')">
+        <button class="btn-apple-pay" onclick="handlePay('apple')">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.52-3.23 0-1.44.62-2.2.44-3.06-.4C3.79 16.17 4.36 9.43 8.7 9.17c1.23.06 2.09.7 2.81.73.99-.2 1.93-.77 2.98-.7 1.27.1 2.22.6 2.84 1.53-2.6 1.54-1.98 4.94.37 5.89-.46 1.2-1.07 2.38-2.14 3.55l1.49.11zM12.03 9.12c-.13-2.27 1.72-4.14 3.92-4.32.28 2.52-2.28 4.43-3.92 4.32z"/></svg>
           Apple Pay
         </button>
-        <button class="btn-google-pay" id="btnGooglePay" style="display:none" onclick="handlePay('google')">
+        <button class="btn-google-pay" onclick="handlePay('google')">
           <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google Pay
         </button>
         <div class="divider">ou</div>
         <button class="btn-card-pay" onclick="handlePay('card')">Payer par carte</button>
       `;
-      // Re-check availability
-      if (paymentRequest) {
-        paymentRequest.canMakePayment().then(r => {
-          if (r?.applePay) document.getElementById('btnApplePay').style.display = 'flex';
-          if (r?.googlePay) document.getElementById('btnGooglePay').style.display = 'flex';
-        });
-      }
     }
 
     // ========== UTILS ==========
