@@ -279,8 +279,9 @@
 
     // ========== LOAD CARD ==========
     async function init() {
-      const params = new URLSearchParams(window.location.search);
-      const slug = params.get('c');
+      // Read slug from path (/c/mon-slug) or query string (?c=mon-slug)
+      const pathMatch = window.location.pathname.match(/^\/c\/(.+)/);
+      const slug = pathMatch ? pathMatch[1] : new URLSearchParams(window.location.search).get('c');
       if (!slug) { showError(); return; }
 
       try {
