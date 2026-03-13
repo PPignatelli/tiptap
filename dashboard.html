@@ -535,8 +535,15 @@
 
       // Slug: custom or random
       const rawSlug = document.getElementById('cardSlug').value.trim();
-      const slug = rawSlug ? sanitizeSlug(rawSlug) : generateSlug();
+      let slug = rawSlug ? sanitizeSlug(rawSlug) : generateSlug();
       if (!slug) return showToast('Lien personnalisé invalide', 'error');
+
+      // Check uniqueness
+      const { data: existing } = await sb.from('cards').select('id').eq('slug', slug).maybeSingle();
+      if (existing) {
+        if (rawSlug) return showToast('Ce lien est déjà pris, choisis-en un autre', 'error');
+        slug = generateSlug(); // retry with new random
+      }
 
       const btn = document.getElementById('btnCreate');
       btn.disabled = true;
