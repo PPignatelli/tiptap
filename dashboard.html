@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Mes Cartes — TipsTap</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6B35'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='white' font-family='system-ui' font-weight='800'>T</text></svg>">
@@ -238,8 +238,39 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 600px) {
-      .cards-grid { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; gap: 16px; }
       .page-title { font-size: 22px; }
+      .page-subtitle { font-size: 14px; margin-bottom: 24px; }
+      .main { padding: 24px 16px; }
+
+      /* Header mobile */
+      .header { padding: 0 16px; }
+      .header-inner { height: 54px; }
+      .header-email { display: none; }
+      .btn-logout { padding: 6px 12px; font-size: 12px; }
+
+      /* Cards */
+      .card-item { border-radius: var(--radius-sm); }
+      .card-body { padding: 14px; }
+      .card-actions button { padding: 12px; font-size: 14px; }
+      .new-card-btn { min-height: 200px; border-radius: var(--radius-sm); }
+
+      /* Modal fullscreen on mobile */
+      .modal-overlay { padding: 0; align-items: flex-end; }
+      .modal {
+        max-width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 92dvh;
+        display: flex; flex-direction: column;
+      }
+      .modal-body {
+        overflow-y: auto; -webkit-overflow-scrolling: touch;
+        flex: 1; padding: 20px 16px;
+      }
+      .modal-header { padding: 16px; }
+      .modal-footer { padding: 14px 16px calc(14px + env(safe-area-inset-bottom)); }
+      .form-group input, .form-group select { font-size: 16px; padding: 12px 14px; }
+      .upload-zone { padding: 24px; }
+      .btn-create, .btn-cancel { padding: 12px 20px; font-size: 15px; }
     }
   </style>
 </head>

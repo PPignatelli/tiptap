@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TipsTap — Contenu exclusif</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6B35'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='white' font-family='system-ui' font-weight='800'>T</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -188,8 +188,29 @@
     .card-footer svg { width: 14px; height: 14px; }
 
     @media (max-width: 440px) {
-      body { padding: 0; }
-      .card-container { border-radius: 0; min-height: 100dvh; box-shadow: none; }
+      body { padding: 0; align-items: flex-start; }
+      .card-container {
+        border-radius: 0; min-height: 100dvh; box-shadow: none;
+        max-width: 100%;
+      }
+      .media-wrapper { aspect-ratio: 1/1; }
+      .card-body { padding: 20px 20px 24px; }
+      .card-price-row { justify-content: center; margin-bottom: 20px; }
+      .card-price { font-size: 32px; }
+      .card-title { font-size: 20px; }
+      .btn-apple-pay, .btn-google-pay {
+        padding: 20px; font-size: 19px; min-height: 60px;
+        border-radius: var(--radius);
+      }
+      .btn-card-pay {
+        padding: 18px; font-size: 17px;
+        border-radius: var(--radius);
+      }
+      .pay-buttons { gap: 14px; }
+      .card-avatar { width: 64px; height: 64px; margin-top: -36px; }
+      .card-footer { padding: 16px 20px 28px; }
+      /* Safe area for notch/home indicator */
+      .card-footer { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
     }
   </style>
 </head>
@@ -279,34 +300,18 @@
 
     // ========== LOAD CARD ==========
     async function init() {
-      // Read slug from path (/c/mon-slug) or query string (?c=mon-slug)
       const pathMatch = window.location.pathname.match(/^\/c\/([^/?]+)/);
       const slug = pathMatch ? decodeURIComponent(pathMatch[1]) : new URLSearchParams(window.location.search).get('c');
 
-      // Debug: show what we detected
-      console.log('DEBUG path:', window.location.pathname, 'slug:', slug);
-
-      if (!slug) {
-        document.getElementById('errorState').querySelector('p').textContent =
-          'Pas de slug. Path: ' + window.location.pathname + ' | Search: ' + window.location.search;
-        showError();
-        return;
-      }
+      if (!slug) { showError(); return; }
 
       try {
         const { data, error } = await sb.from('cards').select('*').eq('slug', slug).single();
-        if (error || !data) {
-          document.getElementById('errorState').querySelector('p').textContent =
-            'Slug: "' + slug + '" | Erreur: ' + (error ? error.message : 'pas de data');
-          showError();
-          return;
-        }
+        if (error || !data) { showError(); return; }
         card = data;
         renderCard();
       } catch (err) {
         console.error(err);
-        document.getElementById('errorState').querySelector('p').textContent =
-          'Exception: ' + err.message + ' | Slug: "' + slug + '"';
         showError();
       }
     }
