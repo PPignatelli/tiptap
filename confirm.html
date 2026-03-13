@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email confirm&eacute; — TipsTap</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF6B35'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>T</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <script>
+    (function(){
+      var t = localStorage.getItem('tipstap-theme') ||
+        (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    body {
+      min-height: 100dvh; display: flex;
+      align-items: center; justify-content: center;
+      padding: 24px;
+      background: var(--color-surface-subtle);
+    }
+    .card {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 48px 36px; max-width: 420px; width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--color-success-light); margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+    .icon svg { width: 36px; height: 36px; color: var(--color-success); }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--color-text); }
+    p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 28px; }
+    .btn {
+      display: inline-block; padding: 14px 32px; border-radius: var(--radius-sm);
+      background: var(--brand); color: white; text-decoration: none;
+      font-size: 15px; font-weight: 700; transition: background var(--duration);
+    }
+    .btn:hover { background: var(--brand-hover); color: white; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h1>Email confirm&eacute; !</h1>
+    <p>Votre adresse email a &eacute;t&eacute; v&eacute;rifi&eacute;e avec succ&egrave;s. Vous pouvez maintenant acc&eacute;der &agrave; votre dashboard et commencer &agrave; recevoir des tips.</p>
+    <a href="/dashboard.html" class="btn">Acc&eacute;der au dashboard</a>
+  </div>
+</body>
+</html>

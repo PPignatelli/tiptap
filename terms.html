@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditions d'utilisation — TipsTap</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF6B35'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>T</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <script>
+    (function(){
+      var t = localStorage.getItem('tipstap-theme') ||
+        (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    .header {
+      background: var(--color-surface-raised);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 24px; position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
+    }
+    .logo-link {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .content {
+      max-width: 720px; margin: 0 auto; padding: 48px 24px 80px;
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--color-text); }
+    .date { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 36px; }
+    h2 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--color-text); }
+    p { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 16px; line-height: 1.7; }
+    ul { padding-left: 24px; margin-bottom: 16px; }
+    li { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 8px; line-height: 1.7; }
+    li strong { color: var(--color-text); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo-link">
+        <div class="logo-wordmark">Tips<span>Tap</span></div>
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer de th&egrave;me">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="content">
+    <h1>Conditions g&eacute;n&eacute;rales d'utilisation</h1>
+    <p class="date">Derni&egrave;re mise &agrave; jour : 19 f&eacute;vrier 2026</p>
+
+    <h2>1. Objet</h2>
+    <p>TipsTap est une plateforme permettant aux professionnels de services (serveurs, coiffeurs, musiciens, etc.) de recevoir des pourboires digitaux via un QR code. Les pr&eacute;sentes conditions r&eacute;gissent l'utilisation du service.</p>
+
+    <h2>2. Inscription</h2>
+    <p>Pour utiliser TipsTap en tant que professionnel, vous devez cr&eacute;er un compte avec une adresse email valide et connecter un compte Stripe. Vous devez &ecirc;tre &acirc;g&eacute;(e) d'au moins 18 ans et fournir des informations exactes.</p>
+
+    <h2>3. Commission et paiements</h2>
+    <p>TipsTap pr&eacute;l&egrave;ve une commission de 10% sur chaque pourboire re&ccedil;u. Les frais de traitement Stripe s'appliquent en sus. Les versements sont effectu&eacute;s directement sur votre compte bancaire via Stripe Connect selon leurs d&eacute;lais standards (2-3 jours ouvr&eacute;s).</p>
+
+    <h2>4. Obligations de l'utilisateur</h2>
+    <ul>
+      <li>Ne pas utiliser le service &agrave; des fins ill&eacute;gales ou frauduleuses</li>
+      <li>Ne pas cr&eacute;er de faux profils ou usurper l'identit&eacute; d'autrui</li>
+      <li>Fournir des informations exactes et &agrave; jour</li>
+      <li>Respecter les conditions d'utilisation de Stripe</li>
+    </ul>
+
+    <h2>5. Propri&eacute;t&eacute; intellectuelle</h2>
+    <p>Le contenu, le design et le code source de TipsTap sont prot&eacute;g&eacute;s par le droit d'auteur. Vous conservez la propri&eacute;t&eacute; de vos contenus (photo, textes) mais accordez &agrave; TipsTap une licence d'utilisation pour afficher ces contenus sur la plateforme.</p>
+
+    <h2>6. Responsabilit&eacute;</h2>
+    <p>TipsTap agit en tant qu'interm&eacute;diaire technique et ne peut &ecirc;tre tenu responsable des litiges entre un professionnel et un client. Le service est fourni &laquo; en l'&eacute;tat &raquo;.</p>
+
+    <h2>7. R&eacute;siliation</h2>
+    <p>Vous pouvez supprimer votre compte &agrave; tout moment en nous contactant &agrave; <a href="mailto:hello@tipstap.be">hello@tipstap.be</a>. TipsTap se r&eacute;serve le droit de suspendre ou supprimer un compte en cas de violation des pr&eacute;sentes conditions.</p>
+
+    <h2>8. Droit applicable</h2>
+    <p>Les pr&eacute;sentes conditions sont r&eacute;gies par le droit belge. Tout litige sera soumis aux tribunaux comp&eacute;tents de Bruxelles, Belgique.</p>
+
+    <h2>9. Contact</h2>
+    <p>Pour toute question : <a href="mailto:hello@tipstap.be">hello@tipstap.be</a></p>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('tipstap-theme', next);
+    }
+  </script>
+</body>
+</html>

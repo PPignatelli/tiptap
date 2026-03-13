@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de confidentialit&eacute; — TipsTap</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FF6B35'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>T</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
+  <script>
+    (function(){
+      var t = localStorage.getItem('tipstap-theme') ||
+        (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    .header {
+      background: var(--color-surface-raised);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 24px; position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+    .header-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 60px;
+    }
+    .logo-link {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .content {
+      max-width: 720px; margin: 0 auto; padding: 48px 24px 80px;
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; color: var(--color-text); }
+    .date { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 36px; }
+    h2 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; color: var(--color-text); }
+    p { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 16px; line-height: 1.7; }
+    ul { padding-left: 24px; margin-bottom: 16px; }
+    li { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 8px; line-height: 1.7; }
+    li strong { color: var(--color-text); }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    th, td {
+      text-align: left; padding: 10px 14px; font-size: 14px;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+    }
+    th { font-weight: 600; background: var(--color-surface-subtle); color: var(--color-text); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo-link">
+        <div class="logo-wordmark">Tips<span>Tap</span></div>
+      </a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer de th&egrave;me">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+  <div class="content">
+    <h1>Politique de confidentialit&eacute;</h1>
+    <p class="date">Derni&egrave;re mise &agrave; jour : 19 f&eacute;vrier 2026</p>
+
+    <p>TipsTap s'engage &agrave; prot&eacute;ger votre vie priv&eacute;e conform&eacute;ment au R&egrave;glement G&eacute;n&eacute;ral sur la Protection des Donn&eacute;es (RGPD).</p>
+
+    <h2>1. Responsable du traitement</h2>
+    <p>TipsTap, situ&eacute; en Belgique. Contact : <a href="mailto:hello@tipstap.be">hello@tipstap.be</a></p>
+
+    <h2>2. Donn&eacute;es collect&eacute;es</h2>
+    <table>
+      <tr><th>Donn&eacute;e</th><th>Finalit&eacute;</th><th>Base l&eacute;gale</th></tr>
+      <tr><td>Email, nom</td><td>Cr&eacute;ation de compte</td><td>Ex&eacute;cution du contrat</td></tr>
+      <tr><td>Photo de profil</td><td>Affichage sur page de tip</td><td>Consentement</td></tr>
+      <tr><td>Donn&eacute;es Stripe</td><td>Traitement des paiements</td><td>Ex&eacute;cution du contrat</td></tr>
+      <tr><td>Historique des tips</td><td>Dashboard et statistiques</td><td>Ex&eacute;cution du contrat</td></tr>
+      <tr><td>Pr&eacute;nom du tipper (optionnel)</td><td>Affichage dans l'historique</td><td>Consentement</td></tr>
+    </table>
+
+    <h2>3. Stockage des donn&eacute;es</h2>
+    <p>Vos donn&eacute;es sont stock&eacute;es sur les serveurs de Supabase (infrastructure AWS, r&eacute;gion EU) et Stripe. Nous ne stockons jamais de donn&eacute;es de carte bancaire &mdash; celles-ci sont trait&eacute;es exclusivement par Stripe (certifi&eacute; PCI DSS niveau 1).</p>
+
+    <h2>4. Partage des donn&eacute;es</h2>
+    <p>Nous ne vendons ni ne partageons vos donn&eacute;es personnelles avec des tiers, sauf :</p>
+    <ul>
+      <li><strong>Stripe</strong> : pour le traitement des paiements</li>
+      <li><strong>Supabase</strong> : pour l'h&eacute;bergement technique</li>
+      <li><strong>Autorit&eacute;s comp&eacute;tentes</strong> : en cas d'obligation l&eacute;gale</li>
+    </ul>
+
+    <h2>5. Dur&eacute;e de conservation</h2>
+    <p>Vos donn&eacute;es sont conserv&eacute;es tant que votre compte est actif. Apr&egrave;s suppression du compte, les donn&eacute;es sont effac&eacute;es sous 30 jours, sauf obligation l&eacute;gale de conservation (donn&eacute;es fiscales : 7 ans).</p>
+
+    <h2>6. Vos droits (RGPD)</h2>
+    <p>Vous disposez des droits suivants :</p>
+    <ul>
+      <li><strong>Acc&egrave;s</strong> : obtenir une copie de vos donn&eacute;es</li>
+      <li><strong>Rectification</strong> : corriger des donn&eacute;es inexactes</li>
+      <li><strong>Suppression</strong> : demander l'effacement de vos donn&eacute;es</li>
+      <li><strong>Portabilit&eacute;</strong> : r&eacute;cup&eacute;rer vos donn&eacute;es dans un format structur&eacute;</li>
+      <li><strong>Opposition</strong> : vous opposer &agrave; certains traitements</li>
+    </ul>
+    <p>Pour exercer ces droits : <a href="mailto:hello@tipstap.be">hello@tipstap.be</a></p>
+
+    <h2>7. Cookies</h2>
+    <p>TipsTap utilise uniquement des cookies techniques n&eacute;cessaires au fonctionnement du service (session d'authentification). Nous n'utilisons pas de cookies publicitaires ni de trackers tiers.</p>
+
+    <h2>8. Modifications</h2>
+    <p>Cette politique peut &ecirc;tre mise &agrave; jour. Nous vous informerons par email en cas de changement significatif.</p>
+
+    <h2>9. Contact</h2>
+    <p>Pour toute question relative &agrave; vos donn&eacute;es : <a href="mailto:hello@tipstap.be">hello@tipstap.be</a></p>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('tipstap-theme', next);
+    }
+  </script>
+</body>
+</html>

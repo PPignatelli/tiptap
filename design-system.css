@@ -1,0 +1,159 @@
+/* ================================================
+   TipsTap Design System
+   Shared tokens, reset, dark mode
+   ================================================ */
+
+/* --- Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* --- Design Tokens --- */
+:root {
+  /* Brand */
+  --brand: #FF6B35;
+  --brand-hover: #E85D2A;
+  --brand-light: #FFF3ED;
+  --brand-subtle: #FFF9F5;
+  --brand-glow: rgba(255, 107, 53, 0.25);
+
+  /* Semantic — Light */
+  --color-text: #0F172A;
+  --color-text-secondary: #64748B;
+  --color-text-tertiary: #94A3B8;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-subtle: #F8FAFC;
+  --color-surface-inset: #F1F5F9;
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-overlay: rgba(15, 23, 42, 0.5);
+
+  /* Status */
+  --color-success: #10B981;
+  --color-success-light: #ECFDF5;
+  --color-error: #EF4444;
+  --color-error-light: #FEF2F2;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FFFBEB;
+  --color-info: #3B82F6;
+  --color-info-light: #EFF6FF;
+
+  /* Radius */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.12);
+
+  /* Typography */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 0.2s;
+  --duration-slow: 0.4s;
+}
+
+/* --- Dark Mode --- */
+[data-theme="dark"] {
+  --color-text: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #475569;
+  --color-surface: #0B1120;
+  --color-surface-raised: #162031;
+  --color-surface-subtle: #131C2E;
+  --color-surface-inset: #0B1120;
+  --color-border: #1E3048;
+  --color-border-light: #162031;
+  --color-overlay: rgba(0, 0, 0, 0.65);
+
+  --brand-light: rgba(255, 107, 53, 0.12);
+  --brand-subtle: rgba(255, 107, 53, 0.06);
+  --brand-glow: rgba(255, 107, 53, 0.3);
+
+  --color-success-light: rgba(16, 185, 129, 0.1);
+  --color-error-light: rgba(239, 68, 68, 0.1);
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-info-light: rgba(59, 130, 246, 0.1);
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.5);
+}
+
+/* --- Base --- */
+body {
+  font-family: var(--font);
+  color: var(--color-text);
+  background: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  transition: background var(--duration-slow) var(--ease), color var(--duration) var(--ease);
+}
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { color: var(--brand-hover); }
+
+img { max-width: 100%; display: block; }
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--duration);
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: var(--brand-subtle);
+}
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon { width: 18px; height: 18px; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+[data-theme="light"] .theme-toggle .icon-moon,
+:root:not([data-theme]) .theme-toggle .icon-moon { display: none; }
+
+/* --- Logo --- */
+.logo-wordmark {
+  font-size: 20px; font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
+}
+.logo-wordmark span { color: var(--brand); }
+
+/* --- Toast --- */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500;
+  z-index: 300;
+  opacity: 0; transition: opacity 0.3s;
+  box-shadow: var(--shadow-lg);
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.visible { opacity: 1; }
+.toast.success { background: var(--color-success); color: white; border-color: transparent; }
+.toast.error { background: var(--color-error); color: white; border-color: transparent; }
