@@ -280,17 +280,33 @@
     // ========== LOAD CARD ==========
     async function init() {
       // Read slug from path (/c/mon-slug) or query string (?c=mon-slug)
-      const pathMatch = window.location.pathname.match(/^\/c\/(.+)/);
-      const slug = pathMatch ? pathMatch[1] : new URLSearchParams(window.location.search).get('c');
-      if (!slug) { showError(); return; }
+      const pathMatch = window.location.pathname.match(/^\/c\/([^/?]+)/);
+      const slug = pathMatch ? decodeURIComponent(pathMatch[1]) : new URLSearchParams(window.location.search).get('c');
+
+      // Debug: show what we detected
+      console.log('DEBUG path:', window.location.pathname, 'slug:', slug);
+
+      if (!slug) {
+        document.getElementById('errorState').querySelector('p').textContent =
+          'Pas de slug. Path: ' + window.location.pathname + ' | Search: ' + window.location.search;
+        showError();
+        return;
+      }
 
       try {
         const { data, error } = await sb.from('cards').select('*').eq('slug', slug).single();
-        if (error || !data) { showError(); return; }
+        if (error || !data) {
+          document.getElementById('errorState').querySelector('p').textContent =
+            'Slug: "' + slug + '" | Erreur: ' + (error ? error.message : 'pas de data');
+          showError();
+          return;
+        }
         card = data;
         renderCard();
       } catch (err) {
         console.error(err);
+        document.getElementById('errorState').querySelector('p').textContent =
+          'Exception: ' + err.message + ' | Slug: "' + slug + '"';
         showError();
       }
     }
