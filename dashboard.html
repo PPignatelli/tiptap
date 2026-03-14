@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Mes Cartes — TipsTap</title>
+  <title>My Cards — TipsTap</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6B35'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='white' font-family='system-ui' font-weight='800'>T</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -297,11 +297,11 @@
       <div class="logo-wordmark">Tips<span>Tap</span></div>
       <div class="header-right">
         <span class="header-email" id="headerUser"></span>
-        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer le thème">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
         </button>
-        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+        <button class="btn-logout" onclick="logout()">Log out</button>
       </div>
     </div>
   </header>
@@ -311,8 +311,8 @@
 
   <!-- MAIN -->
   <div class="main" id="mainContent" style="display:none;">
-    <h1 class="page-title">Mes Cartes</h1>
-    <p class="page-subtitle">Créez du contenu exclusif, partagez le lien, recevez des paiements.</p>
+    <h1 class="page-title">My Cards</h1>
+    <p class="page-subtitle">Create exclusive content, share the link, get paid.</p>
 
     <div class="cards-grid" id="cardsGrid">
       <!-- Cards rendered here -->
@@ -323,47 +323,47 @@
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
-        <h2>Nouvelle Carte</h2>
+        <h2>New Card</h2>
         <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Photo ou Vidéo</label>
+          <label>Photo or Video</label>
           <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
-            <p>Cliquez ou glissez un fichier</p>
+            <p>Click or drag a file</p>
             <span class="hint">JPG, PNG, MP4, MOV — max 50 MB</span>
           </div>
           <div class="upload-preview" id="uploadPreview"></div>
           <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" onchange="handleFileSelect(this)">
         </div>
         <div class="form-group">
-          <label>Photo de profil (optionnel)</label>
+          <label>Profile picture (optional)</label>
           <div class="avatar-upload">
             <div class="avatar-preview" id="avatarPreview">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('avatarInput').click()">Choisir une photo</button>
+            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('avatarInput').click()">Choose a photo</button>
           </div>
           <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarSelect(this)">
         </div>
         <div class="form-group">
-          <label for="cardTitle">Titre (optionnel)</label>
-          <input type="text" id="cardTitle" placeholder="Ex: Photo exclusive, Behind the scenes...">
+          <label for="cardTitle">Title (optional)</label>
+          <input type="text" id="cardTitle" placeholder="e.g. Exclusive photo, Behind the scenes...">
         </div>
         <div class="form-group">
-          <label for="cardPrice">Prix (€)</label>
+          <label for="cardPrice">Price (€)</label>
           <input type="number" id="cardPrice" min="1" max="999" step="0.5" value="5" placeholder="5">
         </div>
         <div class="form-group">
-          <label for="cardSlug">Lien personnalisé</label>
-          <input type="text" id="cardSlug" placeholder="mon-contenu-vip" oninput="updateSlugPreview()">
-          <div class="slug-preview" id="slugPreview">Lien : <span id="slugUrl"></span></div>
+          <label for="cardSlug">Custom link</label>
+          <input type="text" id="cardSlug" placeholder="my-vip-content" oninput="updateSlugPreview()">
+          <div class="slug-preview" id="slugPreview">Link: <span id="slugUrl"></span></div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-        <button class="btn-create" id="btnCreate" onclick="createCard()">Créer la carte</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-create" id="btnCreate" onclick="createCard()">Create card</button>
       </div>
     </div>
   </div>
@@ -372,47 +372,47 @@
   <div class="modal-overlay" id="editModalOverlay">
     <div class="modal">
       <div class="modal-header">
-        <h2>Modifier la carte</h2>
+        <h2>Edit card</h2>
         <button class="modal-close" onclick="closeEditModal()">&times;</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Photo ou Vidéo</label>
+          <label>Photo or Video</label>
           <div class="upload-zone" id="editUploadZone" onclick="document.getElementById('editFileInput').click()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
-            <p>Cliquez pour changer le média</p>
-            <span class="hint">Laissez vide pour garder l'actuel</span>
+            <p>Click to change media</p>
+            <span class="hint">Leave empty to keep current</span>
           </div>
           <div class="upload-preview" id="editUploadPreview"></div>
           <input type="file" id="editFileInput" accept="image/*,video/*" style="display:none" onchange="handleEditFileSelect(this)">
         </div>
         <div class="form-group">
-          <label>Photo de profil</label>
+          <label>Profile picture</label>
           <div class="avatar-upload">
             <div class="avatar-preview" id="editAvatarPreview">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()">Changer la photo</button>
+            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()">Change photo</button>
           </div>
           <input type="file" id="editAvatarInput" accept="image/*" style="display:none" onchange="handleEditAvatarSelect(this)">
         </div>
         <div class="form-group">
-          <label for="editCardTitle">Titre</label>
+          <label for="editCardTitle">Title</label>
           <input type="text" id="editCardTitle" placeholder="Ex: Photo exclusive...">
         </div>
         <div class="form-group">
-          <label for="editCardPrice">Prix (€)</label>
+          <label for="editCardPrice">Price (€)</label>
           <input type="number" id="editCardPrice" min="1" max="999" step="0.5" placeholder="5">
         </div>
         <div class="form-group">
-          <label for="editCardSlug">Lien personnalisé</label>
-          <input type="text" id="editCardSlug" placeholder="mon-contenu-vip" oninput="updateEditSlugPreview()">
-          <div class="slug-preview">Lien : <span id="editSlugUrl"></span></div>
+          <label for="editCardSlug">Custom link</label>
+          <input type="text" id="editCardSlug" placeholder="my-vip-content" oninput="updateEditSlugPreview()">
+          <div class="slug-preview">Link: <span id="editSlugUrl"></span></div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeEditModal()">Annuler</button>
-        <button class="btn-create" id="btnSaveEdit" onclick="saveEditCard()">Enregistrer</button>
+        <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-create" id="btnSaveEdit" onclick="saveEditCard()">Save</button>
       </div>
     </div>
   </div>
@@ -477,7 +477,7 @@
       html += `
         <div class="new-card-btn" onclick="openModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          <span>Nouvelle carte</span>
+          <span>New card</span>
         </div>
       `;
 
@@ -503,24 +503,24 @@
             <div class="card-body">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
                 ${avatarHtml}
-                <div class="card-title">${card.title ? escapeHtml(card.title) : 'Sans titre'}</div>
+                <div class="card-title">${card.title ? escapeHtml(card.title) : 'Untitled'}</div>
               </div>
               <div class="card-price">${priceEur} €</div>
               <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px;word-break:break-all;">/c/${escapeHtml(card.slug)}</div>
               <div class="card-stats">
                 <span class="card-stat">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  <strong>${views}</strong> vues
+                  <strong>${views}</strong> views
                 </span>
                 <span class="card-stat">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg>
-                  <strong>${clicks}</strong> clics
+                  <strong>${clicks}</strong> clicks
                 </span>
               </div>
               <div class="card-actions">
-                <button class="btn-copy" onclick="copyLink('${escapeHtml(card.slug)}')">Copier</button>
-                <button class="btn-edit" onclick="openEditModal('${card.id}')">Modifier</button>
-                <button class="btn-delete" onclick="deleteCard('${card.id}')">Supprimer</button>
+                <button class="btn-copy" onclick="copyLink('${escapeHtml(card.slug)}')">Copy</button>
+                <button class="btn-edit" onclick="openEditModal('${card.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteCard('${card.id}')">Delete</button>
               </div>
             </div>
           </div>
@@ -539,9 +539,9 @@
       document.getElementById('uploadPreview').style.display = 'none';
       document.getElementById('uploadPreview').innerHTML = '';
       document.getElementById('uploadZone').classList.remove('has-file');
-      document.getElementById('uploadZone').querySelector('p').textContent = 'Cliquez ou glissez un fichier';
+      document.getElementById('uploadZone').querySelector('p').textContent = 'Click or drag a file';
       document.getElementById('btnCreate').disabled = false;
-      document.getElementById('btnCreate').textContent = 'Créer la carte';
+      document.getElementById('btnCreate').textContent = 'Create card';
       // Reset avatar
       selectedAvatar = null;
       document.getElementById('avatarInput').value = '';
@@ -561,7 +561,7 @@
       const file = input.files[0];
       if (!file) return;
       if (file.size > 50 * 1024 * 1024) {
-        showToast('Fichier trop volumineux (max 50 MB)', 'error');
+        showToast('File too large (max 50 MB)', 'error');
         return;
       }
       selectedFile = file;
@@ -612,7 +612,7 @@
       const file = input.files[0];
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) {
-        showToast('Photo de profil trop volumineuse (max 5 MB)', 'error');
+        showToast('Profile picture too large (max 5 MB)', 'error');
         return;
       }
       selectedAvatar = file;
@@ -637,26 +637,26 @@
 
     // ========== CREATE CARD ==========
     async function createCard() {
-      if (!selectedFile) return showToast('Ajoutez une photo ou vidéo', 'error');
+      if (!selectedFile) return showToast('Add a photo or video', 'error');
 
       const price = Math.round(parseFloat(document.getElementById('cardPrice').value) * 100);
-      if (!price || price < 100) return showToast('Prix minimum : 1 €', 'error');
+      if (!price || price < 100) return showToast('Minimum price: €1', 'error');
 
       // Slug: custom or random
       const rawSlug = document.getElementById('cardSlug').value.trim();
       let slug = rawSlug ? sanitizeSlug(rawSlug) : generateSlug();
-      if (!slug) return showToast('Lien personnalisé invalide', 'error');
+      if (!slug) return showToast('Invalid custom link', 'error');
 
       // Check uniqueness
       const { data: existing } = await sb.from('cards').select('id').eq('slug', slug).maybeSingle();
       if (existing) {
-        if (rawSlug) return showToast('Ce lien est déjà pris, choisis-en un autre', 'error');
+        if (rawSlug) return showToast('This link is already taken', 'error');
         slug = generateSlug(); // retry with new random
       }
 
       const btn = document.getElementById('btnCreate');
       btn.disabled = true;
-      btn.textContent = 'Envoi...';
+      btn.textContent = 'Uploading...';
 
       try {
         // 1. Upload media
@@ -700,23 +700,23 @@
         if (insertErr) throw insertErr;
 
         closeModal();
-        showToast('Carte créée !', 'success');
+        showToast('Card created!', 'success');
         await loadCards();
         renderCards();
       } catch (err) {
         console.error('Create card error:', err);
-        showToast('Erreur : ' + (err.message || 'Échec de la création'), 'error');
+        showToast('Error: ' + (err.message || 'Creation failed'), 'error');
         btn.disabled = false;
-        btn.textContent = 'Créer la carte';
+        btn.textContent = 'Create card';
       }
     }
 
     // ========== DELETE CARD ==========
     async function deleteCard(id) {
-      if (!confirm('Supprimer cette carte ?')) return;
+      if (!confirm('Delete this card?')) return;
       const { error } = await sb.from('cards').delete().eq('id', id);
-      if (error) { showToast('Erreur suppression', 'error'); return; }
-      showToast('Carte supprimée', 'success');
+      if (error) { showToast('Delete error', 'error'); return; }
+      showToast('Card deleted', 'success');
       await loadCards();
       renderCards();
     }
@@ -725,7 +725,7 @@
     function copyLink(slug) {
       const url = window.location.origin + '/c/' + encodeURIComponent(slug);
       navigator.clipboard.writeText(url).then(() => {
-        showToast('Lien copié !', 'success');
+        showToast('Link copied!', 'success');
       });
     }
 
@@ -764,7 +764,7 @@
       document.getElementById('editFileInput').value = '';
       document.getElementById('editAvatarInput').value = '';
       document.getElementById('btnSaveEdit').disabled = false;
-      document.getElementById('btnSaveEdit').textContent = 'Enregistrer';
+      document.getElementById('btnSaveEdit').textContent = 'Save';
 
       // Pre-fill fields
       document.getElementById('editCardTitle').value = editingCard.title || '';
@@ -782,7 +782,7 @@
       preview.style.display = 'block';
       const zone = document.getElementById('editUploadZone');
       zone.classList.add('has-file');
-      zone.querySelector('p').textContent = 'Média actuel';
+      zone.querySelector('p').textContent = 'Current media';
 
       // Show current avatar
       const avatarPreview = document.getElementById('editAvatarPreview');
@@ -808,7 +808,7 @@
     function handleEditFileSelect(input) {
       const file = input.files[0];
       if (!file) return;
-      if (file.size > 50 * 1024 * 1024) { showToast('Fichier trop volumineux (max 50 MB)', 'error'); return; }
+      if (file.size > 50 * 1024 * 1024) { showToast('File too large (max 50 MB)', 'error'); return; }
       editSelectedFile = file;
       const zone = document.getElementById('editUploadZone');
       zone.classList.add('has-file');
@@ -825,7 +825,7 @@
     function handleEditAvatarSelect(input) {
       const file = input.files[0];
       if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { showToast('Photo trop volumineuse (max 5 MB)', 'error'); return; }
+      if (file.size > 5 * 1024 * 1024) { showToast('Photo too large (max 5 MB)', 'error'); return; }
       editSelectedAvatar = file;
       document.getElementById('editAvatarPreview').innerHTML = '<img src="' + URL.createObjectURL(file) + '" alt="">';
     }
@@ -840,21 +840,21 @@
       if (!editingCard) return;
 
       const price = Math.round(parseFloat(document.getElementById('editCardPrice').value) * 100);
-      if (!price || price < 100) return showToast('Prix minimum : 1 €', 'error');
+      if (!price || price < 100) return showToast('Minimum price: €1', 'error');
 
       const rawSlug = document.getElementById('editCardSlug').value.trim();
       const slug = rawSlug ? sanitizeSlug(rawSlug) : editingCard.slug;
-      if (!slug) return showToast('Lien invalide', 'error');
+      if (!slug) return showToast('Invalid link', 'error');
 
       // Check slug uniqueness if changed
       if (slug !== editingCard.slug) {
         const { data: existing } = await sb.from('cards').select('id').eq('slug', slug).maybeSingle();
-        if (existing) return showToast('Ce lien est déjà pris', 'error');
+        if (existing) return showToast('This link is already taken', 'error');
       }
 
       const btn = document.getElementById('btnSaveEdit');
       btn.disabled = true;
-      btn.textContent = 'Enregistrement...';
+      btn.textContent = 'Saving...';
 
       try {
         const updates = {
@@ -889,14 +889,14 @@
         if (updateErr) throw updateErr;
 
         closeEditModal();
-        showToast('Carte modifiée !', 'success');
+        showToast('Card updated!', 'success');
         await loadCards();
         renderCards();
       } catch (err) {
         console.error('Edit card error:', err);
-        showToast('Erreur : ' + (err.message || 'Échec'), 'error');
+        showToast('Error: ' + (err.message || 'Failed'), 'error');
         btn.disabled = false;
-        btn.textContent = 'Enregistrer';
+        btn.textContent = 'Save';
       }
     }
 
