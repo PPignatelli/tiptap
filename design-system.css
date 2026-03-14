@@ -157,3 +157,25 @@ img { max-width: 100%; display: block; }
 .toast.visible { opacity: 1; }
 .toast.success { background: var(--color-success); color: white; border-color: transparent; }
 .toast.error { background: var(--color-error); color: white; border-color: transparent; }
+
+/* --- Language Toggle --- */
+.lang-toggle {
+  height: 36px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--duration);
+  flex-shrink: 0;
+  font-size: 13px; font-weight: 700;
+  font-family: var(--font);
+  padding: 0 10px;
+  letter-spacing: 0.02em;
+}
+.lang-toggle:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: var(--brand-subtle);
+}

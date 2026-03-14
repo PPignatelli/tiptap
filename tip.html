@@ -187,6 +187,18 @@
     .card-footer a:hover { color: var(--brand); }
     .card-footer svg { width: 14px; height: 14px; }
 
+    .lang-btn {
+      position: fixed; top: 16px; right: 16px; z-index: 50;
+      height: 36px; padding: 0 10px;
+      border-radius: 8px; border: 1px solid var(--color-border);
+      background: var(--color-surface); color: var(--color-text-secondary);
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: var(--font); letter-spacing: 0.02em;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .lang-btn:hover { border-color: var(--brand); color: var(--brand); }
+
     @media (max-width: 440px) {
       body { padding: 0; align-items: flex-start; }
       .card-container {
@@ -215,13 +227,15 @@
   </style>
 </head>
 <body>
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn"></button>
+
   <!-- LOADING -->
   <div class="loading-state" id="loading"><div class="spinner"></div></div>
 
   <!-- ERROR -->
   <div class="error-state" id="errorState" style="display:none">
-    <h3>Card not found</h3>
-    <p>This link is invalid or the card has been deleted.</p>
+    <h3 data-i18n="Carte introuvable">Card not found</h3>
+    <p data-i18n="Ce lien n'est pas valide ou la carte a été supprimée.">This link is invalid or the card has been deleted.</p>
   </div>
 
   <!-- CARD -->
@@ -231,7 +245,7 @@
       <!-- Filled by JS -->
       <div class="media-lock">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        <p>Locked content</p>
+        <p data-i18n="Contenu verrouillé">Locked content</p>
       </div>
     </div>
 
@@ -243,7 +257,7 @@
       <div class="card-title" id="cardTitle"></div>
       <div class="card-price-row">
         <span class="card-price" id="cardPrice"></span>
-        <span class="card-price-label">to unlock</span>
+        <span class="card-price-label" data-i18n="pour débloquer">to unlock</span>
       </div>
 
       <div class="pay-buttons" id="payButtons">
@@ -259,26 +273,24 @@
           Google Pay
         </button>
 
-        <div class="divider">or</div>
+        <div class="divider" data-i18n="ou">or</div>
 
         <!-- Card pay -->
-        <button class="btn-card-pay" onclick="handlePay('card')">
-          Pay by card
-        </button>
+        <button class="btn-card-pay" onclick="handlePay('card')"><span data-i18n="Payer par carte">Pay by card</span></button>
       </div>
 
       <!-- Success -->
       <div class="success-msg" id="successMsg">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-        <h3>Content unlocked!</h3>
-        <p>Thanks for your purchase.</p>
+        <h3 data-i18n="Contenu débloqué !">Content unlocked!</h3>
+        <p data-i18n="Merci pour votre achat.">Thanks for your purchase.</p>
       </div>
     </div>
 
     <div class="card-footer">
       <a href="/index.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Powered by TipsTap
+        <span data-i18n="Propulsé par TipsTap">Powered by TipsTap</span>
       </a>
     </div>
   </div>
@@ -288,6 +300,7 @@
   <!-- SUPABASE + STRIPE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://js.stripe.com/v3/" async></script>
+  <script src="/i18n.js"></script>
   <script>
     const SUPABASE_URL = 'https://iuzylqpixymphydjmkeo.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1enlscXBpeHltcGh5ZGpta2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0OTg5NzEsImV4cCI6MjA4NzA3NDk3MX0.eIpFzw9w5qTQSixdw7_02fQLnsaz-DSa7dc74kfIE6o';
@@ -297,6 +310,10 @@
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let card = null;
+
+    // Set lang button text
+    document.getElementById('langBtn').textContent = LANG === 'en' ? 'FR' : 'EN';
+    applyI18n();
 
     // ========== LOAD CARD ==========
     async function init() {
@@ -342,7 +359,7 @@
       }
 
       // Title
-      document.getElementById('cardTitle').textContent = card.title || 'Exclusive content';
+      document.getElementById('cardTitle').textContent = card.title || t('Exclusive content', 'Contenu exclusif');
 
       // Price
       const priceEur = (card.price / 100).toFixed(2).replace('.', ',');
@@ -371,6 +388,8 @@
 
       // Setup Stripe payment (don't let errors hide buttons)
       setupPayment().catch(err => console.error('Stripe setup error:', err));
+
+      applyI18n();
     }
 
     // ========== STRIPE SETUP ==========
@@ -407,7 +426,7 @@
         clientSecret = data.clientSecret;
       } catch (err) {
         console.error('PaymentIntent error:', err);
-        showToast('Payment error: ' + err.message, 'error');
+        showToast(t('Payment error: ', 'Erreur de paiement : ') + err.message, 'error');
         return;
       }
 
@@ -416,7 +435,7 @@
         country: 'BE',
         currency: 'eur',
         total: {
-          label: card.title || 'TipsTap Content',
+          label: card.title || t('TipsTap Content', 'Contenu TipsTap'),
           amount: card.price,
         },
         requestPayerName: false,
@@ -436,7 +455,7 @@
         );
         if (confirmError) {
           ev.complete('fail');
-          showToast('Payment declined', 'error');
+          showToast(t('Payment declined', 'Paiement refusé'), 'error');
         } else {
           ev.complete('success');
           onPaymentSuccess();
@@ -455,11 +474,11 @@
     async function handlePay(method) {
       // If Stripe wasn't ready before, try again now
       if (!clientSecret && getStripe()) {
-        showToast('Loading payment...', 'info');
+        showToast(t('Loading payment...', 'Chargement du paiement...'), 'info');
         await setupPayment().catch(() => {});
       }
       if (!clientSecret) {
-        showToast('Payment unavailable, try again', 'error');
+        showToast(t('Payment unavailable, try again', 'Paiement indisponible, réessayez'), 'error');
         return;
       }
 
@@ -473,8 +492,8 @@
         } else {
           // Fallback → show card form with a message
           showToast(method === 'apple'
-            ? 'Apple Pay not available on this device. Use card payment.'
-            : 'Google Pay not available on this device. Use card payment.', 'error');
+            ? t('Apple Pay not available on this device. Use card payment.', 'Apple Pay non disponible sur cet appareil. Utilisez la carte.')
+            : t('Google Pay not available on this device. Use card payment.', 'Google Pay non disponible sur cet appareil. Utilisez la carte.'), 'error');
           showCardForm();
         }
       } else {
@@ -486,12 +505,12 @@
       const buttons = document.getElementById('payButtons');
       buttons.innerHTML = `
         <div id="stripePaymentElement" style="margin-bottom:16px;"></div>
-        <button class="btn-card-pay" id="btnConfirmCard" onclick="confirmCardPayment()">Pay</button>
+        <button class="btn-card-pay" id="btnConfirmCard" onclick="confirmCardPayment()">${t('Pay', 'Payer')}</button>
         <button onclick="cancelCardForm()" style="
           margin-top:8px;width:100%;padding:12px;border:1px solid var(--color-border);
           border-radius:var(--radius-sm);background:none;color:var(--color-text-secondary);
           font-size:14px;cursor:pointer;font-weight:600;
-        ">Back</button>
+        ">${t('Back', 'Retour')}</button>
       `;
       paymentElement.mount('#stripePaymentElement');
     }
@@ -503,7 +522,7 @@
     async function confirmCardPayment() {
       const btn = document.getElementById('btnConfirmCard');
       btn.disabled = true;
-      btn.textContent = 'Processing...';
+      btn.textContent = t('Processing...', 'Traitement...');
 
       const { error } = await getStripe().confirmPayment({
         elements: stripeElements,
@@ -514,9 +533,9 @@
       });
 
       if (error) {
-        showToast(error.message || 'Payment declined', 'error');
+        showToast(error.message || t('Payment declined', 'Paiement refusé'), 'error');
         btn.disabled = false;
-        btn.textContent = 'Pay';
+        btn.textContent = t('Pay', 'Payer');
       } else {
         onPaymentSuccess();
       }
@@ -526,7 +545,7 @@
       document.getElementById('mediaWrapper').classList.add('revealed');
       document.getElementById('payButtons').style.display = 'none';
       document.getElementById('successMsg').classList.add('active');
-      showToast('Payment successful!', 'success');
+      showToast(t('Payment successful!', 'Paiement réussi !'), 'success');
     }
 
     function renderPayButtons() {
@@ -540,8 +559,8 @@
           <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google Pay
         </button>
-        <div class="divider">or</div>
-        <button class="btn-card-pay" onclick="handlePay('card')">Pay by card</button>
+        <div class="divider">${t('or', 'ou')}</div>
+        <button class="btn-card-pay" onclick="handlePay('card')">${t('Pay by card', 'Payer par carte')}</button>
       `;
     }
 

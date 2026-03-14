@@ -771,27 +771,28 @@
         <span class="logo-wordmark">Tips<span>Tap</span></span>
       </a>
       <div class="nav-right">
-        <a href="#how" class="nav-link">How it works</a>
-        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#how" class="nav-link" data-i18n="Comment &ccedil;a marche">How it works</a>
+        <a href="#pricing" class="nav-link" data-i18n="Tarif">Pricing</a>
         <a href="#faq" class="nav-link">FAQ</a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
+        <button class="lang-toggle" onclick="toggleLang()" id="langBtn"></button>
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
         </button>
-        <button class="nav-cta" onclick="openAuth()">Get started</button>
+        <button class="nav-cta" onclick="openAuth()" data-i18n="Commencer">Get started</button>
       </div>
     </div>
   </nav>
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#how" onclick="closeMobileMenu()">How it works</a>
-    <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="#how" onclick="closeMobileMenu()" data-i18n="Comment &ccedil;a marche">How it works</a>
+    <a href="#pricing" onclick="closeMobileMenu()" data-i18n="Tarif">Pricing</a>
     <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
-    <a href="#" onclick="closeMobileMenu();openAuth();return false;" style="color:var(--brand);font-weight:700;">Get started</a>
+    <a href="#" onclick="closeMobileMenu();openAuth();return false;" style="color:var(--brand);font-weight:700;" data-i18n="Commencer">Get started</a>
   </div>
 
   <!-- HERO -->
@@ -800,16 +801,16 @@
       <div class="hero-text">
         <div class="hero-pill fade-up">
           <div class="hero-pill-dot"></div>
-          Now live
+          <span data-i18n="Lancement en Belgique">Now live</span>
         </div>
-        <h1 class="fade-up delay-1">One tap<br>to <span class="accent">pay.</span></h1>
-        <p class="hero-desc fade-up delay-2">Create your QR code, print it, and receive tips by card, Apple&nbsp;Pay or Google&nbsp;Pay. No app, no hardware.</p>
+        <h1 class="fade-up delay-1"><span data-i18n="Un tap pour">One tap<br>to</span> <span class="accent" data-i18n="payer.">pay.</span></h1>
+        <p class="hero-desc fade-up delay-2" data-i18n="Cr&eacute;ez votre QR code, imprimez-le, et recevez des pourboires par carte, Apple&nbsp;Pay ou Google&nbsp;Pay. Aucune app, aucun mat&eacute;riel.">Create your QR code, print it, and receive tips by card, Apple&nbsp;Pay or Google&nbsp;Pay. No app, no hardware.</p>
         <div class="hero-actions fade-up delay-3">
           <button class="btn-main" onclick="openAuth()">
-            Get started free
+            <span data-i18n="Commencer gratuitement">Get started free</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-          <a class="btn-ghost" href="#how">Learn more</a>
+          <a class="btn-ghost" href="#how" data-i18n="En savoir plus">Learn more</a>
         </div>
         <div class="hero-social fade-up delay-4">
           <div class="hero-avatars">
@@ -818,7 +819,7 @@
             <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="" loading="lazy">
             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" alt="" loading="lazy">
           </div>
-          <div class="hero-social-text"><strong>Trusted by 500+</strong> creators</div>
+          <div class="hero-social-text"><strong data-i18n="Utilis&eacute; par plus de 500">Trusted by 500+</strong> <span data-i18n="cr&eacute;ateurs">creators</span></div>
         </div>
       </div>
       <div class="hero-visual fade-up delay-2">
@@ -829,17 +830,17 @@
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop&crop=face" alt="">
             </div>
             <div class="ph-name">Sarah M.</div>
-            <div class="ph-role">Barista at Copernic</div>
+            <div class="ph-role" data-i18n="Barista chez Copernic">Barista at Copernic</div>
             <div class="ph-amounts">
               <div class="ph-amt">1&euro;</div>
               <div class="ph-amt on">2&euro;</div>
               <div class="ph-amt">5&euro;</div>
               <div class="ph-amt">...</div>
             </div>
-            <div class="ph-btn">Unlock for &euro;2.00</div>
+            <div class="ph-btn" data-i18n="D&eacute;bloquer pour 2,00&euro;">Unlock for &euro;2.00</div>
             <div class="ph-lock">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-              Secured by Stripe
+              <span data-i18n="S&eacute;curis&eacute; par Stripe">Secured by Stripe</span>
             </div>
           </div>
         </div>
@@ -848,8 +849,8 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <div>
-            <div class="phone-notif-text">+&euro;2.00 received!</div>
-            <div class="phone-notif-sub">From Thomas &middot; 3s ago</div>
+            <div class="phone-notif-text" data-i18n="+2,00&euro; re&ccedil;u !">+&euro;2.00 received!</div>
+            <div class="phone-notif-sub" data-i18n="De Thomas &middot; il y a 3s">From Thomas &middot; 3s ago</div>
           </div>
         </div>
       </div>
@@ -861,15 +862,15 @@
     <div class="stats-bar fade-up">
       <div class="stat-item">
         <div class="stat-val"><span class="hl">10%</span></div>
-        <div class="stat-label">One-time fee</div>
+        <div class="stat-label" data-i18n="Commission unique">One-time fee</div>
       </div>
       <div class="stat-item">
         <div class="stat-val">2 min</div>
-        <div class="stat-label">To get started</div>
+        <div class="stat-label" data-i18n="Pour d&eacute;marrer">To get started</div>
       </div>
       <div class="stat-item">
         <div class="stat-val">0&euro;</div>
-        <div class="stat-label">Subscription</div>
+        <div class="stat-label" data-i18n="Abonnement">Subscription</div>
       </div>
     </div>
   </div>
@@ -877,37 +878,37 @@
   <!-- USE CASES -->
   <section class="section section-alt">
     <div class="section-center">
-      <div class="section-label fade-up">Who is it for?</div>
-      <h2 class="section-heading fade-up">For all service professionals.</h2>
-      <p class="section-desc fade-up">Waiters, hairdressers, drivers, musicians... Digital tipping adapts to your profession.</p>
+      <div class="section-label fade-up" data-i18n="Pour qui ?">Who is it for?</div>
+      <h2 class="section-heading fade-up" data-i18n="Pour tous les professionnels du service.">For all service professionals.</h2>
+      <p class="section-desc fade-up" data-i18n="Serveurs, coiffeurs, chauffeurs, musiciens... Le pourboire digital s'adapte &agrave; votre m&eacute;tier.">Waiters, hairdressers, drivers, musicians... Digital tipping adapts to your profession.</p>
     </div>
     <div class="usecases-grid">
       <div class="usecase-card fade-up">
         <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=500&fit=crop" alt="Waiter" loading="lazy">
         <div class="usecase-overlay">
-          <div class="usecase-label">Waiters &amp; Bartenders</div>
-          <div class="usecase-sub">Cafes, restaurants, bars</div>
+          <div class="usecase-label" data-i18n="Serveurs &amp; Barmen">Waiters &amp; Bartenders</div>
+          <div class="usecase-sub" data-i18n="Caf&eacute;s, restaurants, bars">Cafes, restaurants, bars</div>
         </div>
       </div>
       <div class="usecase-card fade-up delay-1">
         <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&h=500&fit=crop" alt="Hairdresser" loading="lazy">
         <div class="usecase-overlay">
-          <div class="usecase-label">Hairdressers &amp; Beauticians</div>
-          <div class="usecase-sub">Beauty salons</div>
+          <div class="usecase-label" data-i18n="Coiffeurs &amp; Esth&eacute;ticiens">Hairdressers &amp; Beauticians</div>
+          <div class="usecase-sub" data-i18n="Salons de beaut&eacute;">Beauty salons</div>
         </div>
       </div>
       <div class="usecase-card fade-up delay-2">
         <img src="https://images.unsplash.com/photo-1526367790999-0150786686a2?w=400&h=500&fit=crop" alt="Driver" loading="lazy">
         <div class="usecase-overlay">
-          <div class="usecase-label">Drivers &amp; Couriers</div>
-          <div class="usecase-sub">Delivery, taxi, rideshare</div>
+          <div class="usecase-label" data-i18n="Chauffeurs &amp; Livreurs">Drivers &amp; Couriers</div>
+          <div class="usecase-sub" data-i18n="Livraison, taxi, VTC">Delivery, taxi, rideshare</div>
         </div>
       </div>
       <div class="usecase-card fade-up delay-3">
         <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=500&fit=crop" alt="Musician" loading="lazy">
         <div class="usecase-overlay">
-          <div class="usecase-label">Musicians &amp; Artists</div>
-          <div class="usecase-sub">Concerts, street, events</div>
+          <div class="usecase-label" data-i18n="Musiciens &amp; Artistes">Musicians &amp; Artists</div>
+          <div class="usecase-sub" data-i18n="Concerts, rue, &eacute;v&eacute;nements">Concerts, street, events</div>
         </div>
       </div>
     </div>
@@ -916,9 +917,9 @@
   <!-- HOW IT WORKS -->
   <section class="section" id="how">
     <div class="section-center">
-      <div class="section-label fade-up">How it works</div>
-      <h2 class="section-heading fade-up">Three steps. Two minutes.</h2>
-      <p class="section-desc fade-up">No app to install, no hardware to buy.</p>
+      <div class="section-label fade-up" data-i18n="Comment &ccedil;a marche">How it works</div>
+      <h2 class="section-heading fade-up" data-i18n="Trois &eacute;tapes. Deux minutes.">Three steps. Two minutes.</h2>
+      <p class="section-desc fade-up" data-i18n="Aucune app &agrave; installer, aucun mat&eacute;riel &agrave; acheter.">No app to install, no hardware to buy.</p>
     </div>
     <div class="steps">
       <div class="step fade-up">
@@ -926,24 +927,24 @@
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-        <h3>Create your profile</h3>
-        <p>Sign up, add your photo and a thank-you message. 60 seconds flat.</p>
+        <h3 data-i18n="Cr&eacute;ez votre profil">Create your profile</h3>
+        <p data-i18n="Inscrivez-vous, ajoutez votre photo et un message de remerciement. 60 secondes chrono.">Sign up, add your photo and a thank-you message. 60 seconds flat.</p>
       </div>
       <div class="step fade-up delay-1">
         <div class="step-num">2</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         </div>
-        <h3>Share your link</h3>
-        <p>Download your unique QR code and stick it on your counter, table or case.</p>
+        <h3 data-i18n="Partagez votre lien">Share your link</h3>
+        <p data-i18n="T&eacute;l&eacute;chargez votre QR code unique et collez-le sur votre comptoir, table ou &eacute;tui.">Download your unique QR code and stick it on your counter, table or case.</p>
       </div>
       <div class="step fade-up delay-2">
         <div class="step-num">3</div>
         <div class="step-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
-        <h3>Get paid</h3>
-        <p>Your customers scan, choose an amount, and pay in one tap. The money goes straight to your account.</p>
+        <h3 data-i18n="Recevez vos paiements">Get paid</h3>
+        <p data-i18n="Vos clients scannent, choisissent un montant et paient en un tap. L'argent arrive directement sur votre compte.">Your customers scan, choose an amount, and pay in one tap. The money goes straight to your account.</p>
       </div>
     </div>
   </section>
@@ -951,9 +952,9 @@
   <!-- PRODUCT IN ACTION -->
   <section class="section section-alt">
     <div class="section-center">
-      <div class="section-label fade-up">In action</div>
-      <h2 class="section-heading fade-up">See TipsTap in action.</h2>
-      <p class="section-desc fade-up">A seamless experience for you and your customers.</p>
+      <div class="section-label fade-up" data-i18n="En action">In action</div>
+      <h2 class="section-heading fade-up" data-i18n="D&eacute;couvrez TipsTap en action.">See TipsTap in action.</h2>
+      <p class="section-desc fade-up" data-i18n="Une exp&eacute;rience fluide pour vous et vos clients.">A seamless experience for you and your customers.</p>
     </div>
     <div class="showcase">
       <!-- Showcase 1: Tip page -->
@@ -961,21 +962,21 @@
         <div>
           <div class="showcase-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
-            Payment page
+            <span data-i18n="Page de paiement">Payment page</span>
           </div>
-          <h3>Your customer scans and pays in 10 seconds</h3>
-          <p>A mobile-optimized payment page. Your photo, your message, a choice of amount, and you're good to go.</p>
+          <h3 data-i18n="Votre client scanne et paie en 10 secondes">Your customer scans and pays in 10 seconds</h3>
+          <p data-i18n="Une page de paiement optimis&eacute;e mobile. Votre photo, votre message, un choix de montant, et c'est parti.">A mobile-optimized payment page. Your photo, your message, a choice of amount, and you're good to go.</p>
           <div class="showcase-feature">
             <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <span>Apple Pay &amp; Google Pay</span>
           </div>
           <div class="showcase-feature">
             <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Standard card payment</span>
+            <span data-i18n="Paiement par carte classique">Standard card payment</span>
           </div>
           <div class="showcase-feature">
             <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Custom amount</span>
+            <span data-i18n="Montant personnalis&eacute;">Custom amount</span>
           </div>
         </div>
         <div class="showcase-visual">
@@ -983,13 +984,13 @@
             <div class="showcase-phone-inner">
               <div style="width:48px;height:48px;border-radius:50%;background:var(--brand);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:20px;">S</div>
               <div style="font-size:14px;font-weight:700;color:var(--color-text);">Sarah M.</div>
-              <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:14px;">Barista</div>
+              <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:14px;" data-i18n="Barista">Barista</div>
               <div style="display:flex;gap:6px;justify-content:center;margin-bottom:10px;">
                 <div style="width:40px;height:32px;border-radius:8px;border:1.5px solid var(--color-border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--color-text-secondary);">1&euro;</div>
                 <div style="width:40px;height:32px;border-radius:8px;border:1.5px solid var(--brand);background:var(--brand-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--brand);">2&euro;</div>
                 <div style="width:40px;height:32px;border-radius:8px;border:1.5px solid var(--color-border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--color-text-secondary);">5&euro;</div>
               </div>
-              <div style="width:100%;padding:10px;border-radius:10px;background:var(--brand);color:white;font-size:12px;font-weight:700;text-align:center;">Unlock for &euro;2.00</div>
+              <div style="width:100%;padding:10px;border-radius:10px;background:var(--brand);color:white;font-size:12px;font-weight:700;text-align:center;" data-i18n="D&eacute;bloquer pour 2,00&euro;">Unlock for &euro;2.00</div>
             </div>
           </div>
         </div>
@@ -1000,41 +1001,41 @@
         <div>
           <div class="showcase-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-            Dashboard
+            <span data-i18n="Tableau de bord">Dashboard</span>
           </div>
-          <h3>Track your earnings in real time</h3>
-          <p>A full dashboard with your stats, tip history, and CSV export for your accounting.</p>
+          <h3 data-i18n="Suivez vos gains en temps r&eacute;el">Track your earnings in real time</h3>
+          <p data-i18n="Un tableau de bord complet avec vos statistiques, l'historique des pourboires et l'export CSV pour votre comptabilit&eacute;.">A full dashboard with your stats, tip history, and CSV export for your accounting.</p>
           <div class="showcase-feature">
             <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Real-time statistics</span>
-          </div>
-          <div class="showcase-feature">
-            <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Complete tip history</span>
+            <span data-i18n="Statistiques en temps r&eacute;el">Real-time statistics</span>
           </div>
           <div class="showcase-feature">
             <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>One-click CSV export</span>
+            <span data-i18n="Historique complet des pourboires">Complete tip history</span>
+          </div>
+          <div class="showcase-feature">
+            <div class="showcase-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span data-i18n="Export CSV en un clic">One-click CSV export</span>
           </div>
         </div>
         <div class="showcase-visual">
           <div class="showcase-dash">
             <div class="showcase-dash-header">
-              <div class="showcase-dash-title">Overview</div>
-              <div class="showcase-dash-badge">+23% this week</div>
+              <div class="showcase-dash-title" data-i18n="Aper&ccedil;u">Overview</div>
+              <div class="showcase-dash-badge" data-i18n="+23% cette semaine">+23% this week</div>
             </div>
             <div class="showcase-dash-stats">
               <div class="sds-card">
                 <div class="sds-val">47&euro;</div>
-                <div class="sds-label">Today</div>
+                <div class="sds-label" data-i18n="Aujourd'hui">Today</div>
               </div>
               <div class="sds-card">
                 <div class="sds-val">186&euro;</div>
-                <div class="sds-label">This week</div>
+                <div class="sds-label" data-i18n="Cette semaine">This week</div>
               </div>
               <div class="sds-card">
                 <div class="sds-val">892&euro;</div>
-                <div class="sds-label">This month</div>
+                <div class="sds-label" data-i18n="Ce mois">This month</div>
               </div>
             </div>
             <div class="showcase-dash-bars">
@@ -1055,68 +1056,68 @@
   <!-- PRICING -->
   <section class="section pricing-section" id="pricing">
     <div class="section-center">
-      <div class="section-label fade-up">Pricing</div>
-      <h2 class="section-heading fade-up">Simple and transparent.</h2>
-      <p class="section-desc fade-up">No subscription. You only pay when you earn.</p>
+      <div class="section-label fade-up" data-i18n="Tarif">Pricing</div>
+      <h2 class="section-heading fade-up" data-i18n="Simple et transparent.">Simple and transparent.</h2>
+      <p class="section-desc fade-up" data-i18n="Aucun abonnement. Vous ne payez que lorsque vous gagnez.">No subscription. You only pay when you earn.</p>
     </div>
     <div class="price-box fade-up">
-      <div class="price-popular">Most popular</div>
-      <div class="price-tag">Fee per transaction</div>
-      <div class="price-val">10% <small>only</small></div>
-      <p class="price-note">Free to create your account and your QR code.</p>
+      <div class="price-popular" data-i18n="Le plus populaire">Most popular</div>
+      <div class="price-tag" data-i18n="Commission par transaction">Fee per transaction</div>
+      <div class="price-val">10% <small data-i18n="seulement">only</small></div>
+      <p class="price-note" data-i18n="Gratuit pour cr&eacute;er votre compte et votre QR code.">Free to create your account and your QR code.</p>
       <ul class="check-list">
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Personalized tip page</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Downloadable unique QR code</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dashboard with statistics</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="Page de pourboire personnalis&eacute;e">Personalized tip page</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="QR code unique t&eacute;l&eacute;chargeable">Downloadable unique QR code</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="Tableau de bord avec statistiques">Dashboard with statistics</span></li>
         <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Apple Pay &amp; Google Pay</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Direct payout to your IBAN</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No commitment</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="Virement direct sur votre IBAN">Direct payout to your IBAN</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="Sans engagement">No commitment</span></li>
       </ul>
-      <button class="price-btn" onclick="openAuth()">Start for free</button>
+      <button class="price-btn" onclick="openAuth()" data-i18n="Commencer gratuitement">Start for free</button>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
   <section class="section section-alt">
     <div class="section-center">
-      <div class="section-label fade-up">Testimonials</div>
-      <h2 class="section-heading fade-up">They use TipsTap.</h2>
-      <p class="section-desc fade-up">Waiters, hairdressers, musicians... digital changes everything.</p>
+      <div class="section-label fade-up" data-i18n="T&eacute;moignages">Testimonials</div>
+      <h2 class="section-heading fade-up" data-i18n="Ils utilisent TipsTap.">They use TipsTap.</h2>
+      <p class="section-desc fade-up" data-i18n="Serveurs, coiffeurs, musiciens... le digital change tout.">Waiters, hairdressers, musicians... digital changes everything.</p>
     </div>
     <div class="reviews">
       <div class="review fade-up">
         <div class="review-quote">&ldquo;</div>
         <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">Since putting the QR on my counter, I get &euro;18 in tips per shift instead of &euro;3 in coins. My customers love it.</p>
+        <p class="review-text" data-i18n="Depuis que j'ai mis le QR sur mon comptoir, je re&ccedil;ois 18&euro; de pourboires par service au lieu de 3&euro; en pi&egrave;ces. Mes clients adorent.">Since putting the QR on my counter, I get &euro;18 in tips per shift instead of &euro;3 in coins. My customers love it.</p>
         <div class="review-author">
           <div class="review-av"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt=""></div>
           <div>
             <div class="review-name">Mehdi K.</div>
-            <div class="review-role">Bartender &mdash; Brussels</div>
+            <div class="review-role" data-i18n="Barman &mdash; Bruxelles">Bartender &mdash; Brussels</div>
           </div>
         </div>
       </div>
       <div class="review fade-up delay-1">
         <div class="review-quote">&ldquo;</div>
         <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">I stuck the QR on my mirror. Customers leave a tip on their way out. So simple.</p>
+        <p class="review-text" data-i18n="J'ai coll&eacute; le QR sur mon miroir. Les clients laissent un pourboire en partant. Tellement simple.">I stuck the QR on my mirror. Customers leave a tip on their way out. So simple.</p>
         <div class="review-author">
           <div class="review-av"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt=""></div>
           <div>
             <div class="review-name">Laura D.</div>
-            <div class="review-role">Hairdresser &mdash; Li&egrave;ge</div>
+            <div class="review-role" data-i18n="Coiffeuse &mdash; Li&egrave;ge">Hairdresser &mdash; Li&egrave;ge</div>
           </div>
         </div>
       </div>
       <div class="review fade-up delay-2">
         <div class="review-quote">&ldquo;</div>
         <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <p class="review-text">I play in the subway, nobody carries cash. With TipsTap I tripled my earnings.</p>
+        <p class="review-text" data-i18n="Je joue dans le m&eacute;tro, personne n'a de cash. Avec TipsTap j'ai tripl&eacute; mes gains.">I play in the subway, nobody carries cash. With TipsTap I tripled my earnings.</p>
         <div class="review-author">
           <div class="review-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt=""></div>
           <div>
             <div class="review-name">Antoine R.</div>
-            <div class="review-role">Musician &mdash; Ghent</div>
+            <div class="review-role" data-i18n="Musicien &mdash; Gand">Musician &mdash; Ghent</div>
           </div>
         </div>
       </div>
@@ -1127,28 +1128,28 @@
   <section class="section" id="faq">
     <div class="section-center">
       <div class="section-label fade-up">FAQ</div>
-      <h2 class="section-heading fade-up">Frequently asked questions</h2>
+      <h2 class="section-heading fade-up" data-i18n="Questions fr&eacute;quentes">Frequently asked questions</h2>
     </div>
     <div class="faq-list">
       <div class="faq-item fade-up">
-        <button class="faq-q" onclick="toggleFaq(this)">How much does it cost?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a"><p>It's free. TipsTap takes 10% only on tips received. If you don't receive anything, you don't pay anything.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="Combien &ccedil;a co&ucirc;te ?">How much does it cost?</span><svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a"><p data-i18n="C'est gratuit. TipsTap prend 10% uniquement sur les pourboires re&ccedil;us. Si vous ne recevez rien, vous ne payez rien.">It's free. TipsTap takes 10% only on tips received. If you don't receive anything, you don't pay anything.</p></div>
       </div>
       <div class="faq-item fade-up">
-        <button class="faq-q" onclick="toggleFaq(this)">How do I receive the money?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a"><p>Directly to your bank account via Stripe. Automatic payouts within 2-3 business days.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="Comment je re&ccedil;ois l'argent ?">How do I receive the money?</span><svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a"><p data-i18n="Directement sur votre compte bancaire via Stripe. Virements automatiques sous 2-3 jours ouvrables.">Directly to your bank account via Stripe. Automatic payouts within 2-3 business days.</p></div>
       </div>
       <div class="faq-item fade-up">
-        <button class="faq-q" onclick="toggleFaq(this)">Does the customer need to install an app?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a"><p>No. The customer scans the QR and lands on a web page. They choose the amount and pay in one tap (Apple Pay, Google Pay or card).</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="Le client doit-il installer une application ?">Does the customer need to install an app?</span><svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a"><p data-i18n="Non. Le client scanne le QR et arrive sur une page web. Il choisit le montant et paie en un tap (Apple Pay, Google Pay ou carte).">No. The customer scans the QR and lands on a web page. They choose the amount and pay in one tap (Apple Pay, Google Pay or card).</p></div>
       </div>
       <div class="faq-item fade-up">
-        <button class="faq-q" onclick="toggleFaq(this)">Is it secure?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a"><p>Yes. Payments are processed by Stripe (PCI DSS Level 1 certified). No banking data is stored on our end.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="Est-ce s&eacute;curis&eacute; ?">Is it secure?</span><svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a"><p data-i18n="Oui. Les paiements sont trait&eacute;s par Stripe (certifi&eacute; PCI DSS Niveau 1). Aucune donn&eacute;e bancaire n'est stock&eacute;e chez nous.">Yes. Payments are processed by Stripe (PCI DSS Level 1 certified). No banking data is stored on our end.</p></div>
       </div>
       <div class="faq-item fade-up">
-        <button class="faq-q" onclick="toggleFaq(this)">What professions is it for?<svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a"><p>Waiters, bartenders, hairdressers, beauticians, drivers, musicians, couriers... Anyone who receives tips.</p></div>
+        <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="Pour quels m&eacute;tiers ?">What professions is it for?</span><svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a"><p data-i18n="Serveurs, barmen, coiffeurs, esth&eacute;ticiens, chauffeurs, musiciens, livreurs... Tous ceux qui re&ccedil;oivent des pourboires.">Waiters, bartenders, hairdressers, beauticians, drivers, musicians, couriers... Anyone who receives tips.</p></div>
       </div>
     </div>
   </section>
@@ -1156,10 +1157,10 @@
   <!-- CTA -->
   <section class="cta-section">
     <div class="cta-box fade-up">
-      <h2>Ready to earn more?</h2>
-      <p>Create your page in 2 minutes. Free, no commitment.</p>
+      <h2 data-i18n="Pr&ecirc;t &agrave; gagner plus ?">Ready to earn more?</h2>
+      <p data-i18n="Cr&eacute;ez votre page en 2 minutes. Gratuit, sans engagement.">Create your page in 2 minutes. Free, no commitment.</p>
       <button class="cta-box-btn" onclick="openAuth()">
-        Get started now
+        <span data-i18n="Commencer maintenant">Get started now</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
@@ -1172,18 +1173,18 @@
         <a href="/" class="logo" style="margin-bottom:4px;">
           <span class="logo-wordmark">Tips<span>Tap</span></span>
         </a>
-        <p>Digital tipping by QR code. Simple, fast, secure.</p>
+        <p data-i18n="Pourboire digital par QR code. Simple, rapide, s&eacute;curis&eacute;.">Digital tipping by QR code. Simple, fast, secure.</p>
       </div>
       <div class="footer-col">
-        <h4>Product</h4>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
+        <h4 data-i18n="Produit">Product</h4>
+        <a href="#how" data-i18n="Comment &ccedil;a marche">How it works</a>
+        <a href="#pricing" data-i18n="Tarif">Pricing</a>
         <a href="#faq">FAQ</a>
       </div>
       <div class="footer-col">
-        <h4>Legal</h4>
-        <a href="/terms.html">Terms</a>
-        <a href="/privacy.html">Privacy</a>
+        <h4 data-i18n="L&eacute;gal">Legal</h4>
+        <a href="/terms.html" data-i18n="Conditions">Terms</a>
+        <a href="/privacy.html" data-i18n="Confidentialit&eacute;">Privacy</a>
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
@@ -1191,10 +1192,10 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">&copy; 2026 TipsTap. Made with care in Belgium.</p>
+      <p class="footer-copy" data-i18n="&copy; 2026 TipsTap. Fait avec soin en Belgique.">&copy; 2026 TipsTap. Made with care in Belgium.</p>
       <div style="display:flex;gap:12px;">
-        <a href="/terms.html" style="font-size:12px;color:var(--color-text-tertiary);text-decoration:none;">Terms</a>
-        <a href="/privacy.html" style="font-size:12px;color:var(--color-text-tertiary);text-decoration:none;">Privacy</a>
+        <a href="/terms.html" style="font-size:12px;color:var(--color-text-tertiary);text-decoration:none;" data-i18n="Conditions">Terms</a>
+        <a href="/privacy.html" style="font-size:12px;color:var(--color-text-tertiary);text-decoration:none;" data-i18n="Confidentialit&eacute;">Privacy</a>
       </div>
     </div>
   </footer>
@@ -1203,16 +1204,16 @@
   <div class="modal-overlay" id="authModal">
     <div class="modal">
       <button class="modal-close" onclick="closeAuth()">&times;</button>
-      <h2 id="authTitle">Create account</h2>
-      <p class="subtitle" id="authSubtitle">Start receiving payments</p>
+      <h2 id="authTitle" data-i18n="Cr&eacute;er un compte">Create account</h2>
+      <p class="subtitle" id="authSubtitle" data-i18n="Commencez &agrave; recevoir des paiements">Start receiving payments</p>
       <div class="tabs">
-        <button class="tab active" id="tabSignup" onclick="switchTab('signup')">Sign up</button>
-        <button class="tab" id="tabLogin" onclick="switchTab('login')">Log in</button>
+        <button class="tab active" id="tabSignup" onclick="switchTab('signup')" data-i18n="Inscription">Sign up</button>
+        <button class="tab" id="tabLogin" onclick="switchTab('login')" data-i18n="Connexion">Log in</button>
       </div>
       <div class="auth-error" id="authError"></div>
       <form id="signupForm" onsubmit="handleSignup(event)">
         <div class="form-group">
-          <label for="signupName">First name</label>
+          <label for="signupName" data-i18n="Pr&eacute;nom">First name</label>
           <input type="text" id="signupName" placeholder="Sarah" required>
         </div>
         <div class="form-group">
@@ -1220,10 +1221,10 @@
           <input type="email" id="signupEmail" placeholder="sarah@email.com" required>
         </div>
         <div class="form-group">
-          <label for="signupPassword">Password</label>
-          <input type="password" id="signupPassword" placeholder="Min. 6 characters" minlength="6" required>
+          <label for="signupPassword" data-i18n="Mot de passe">Password</label>
+          <input type="password" id="signupPassword" placeholder="Min. 6 characters" data-i18n="Min. 6 caract&egrave;res" data-i18n-attr="placeholder" minlength="6" required>
         </div>
-        <button type="submit" class="btn-primary" id="signupBtn">Create account</button>
+        <button type="submit" class="btn-primary" id="signupBtn" data-i18n="Cr&eacute;er un compte">Create account</button>
       </form>
       <form id="loginForm" onsubmit="handleLogin(event)" style="display:none;">
         <div class="form-group">
@@ -1231,19 +1232,22 @@
           <input type="email" id="loginEmail" placeholder="sarah@email.com" required>
         </div>
         <div class="form-group">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" placeholder="Your password" required>
+          <label for="loginPassword" data-i18n="Mot de passe">Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password" data-i18n="Votre mot de passe" data-i18n-attr="placeholder" required>
         </div>
-        <a class="forgot-link" onclick="handleForgotPassword()">Forgot password?</a>
-        <button type="submit" class="btn-primary" id="loginBtn">Log in</button>
+        <a class="forgot-link" onclick="handleForgotPassword()" data-i18n="Mot de passe oubli&eacute; ?">Forgot password?</a>
+        <button type="submit" class="btn-primary" id="loginBtn" data-i18n="Se connecter">Log in</button>
       </form>
       <div class="switch-auth" id="switchAuth">
-        Already have an account? <a onclick="switchTab('login')">Log in</a>
+        <span data-i18n="D&eacute;j&agrave; un compte ?">Already have an account?</span> <a onclick="switchTab('login')" data-i18n="Se connecter">Log in</a>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <!-- I18N -->
+  <script src="/i18n.js"></script>
 
   <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1251,6 +1255,10 @@
     const SUPABASE_URL = 'https://iuzylqpixymphydjmkeo.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1enlscXBpeHltcGh5ZGpta2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0OTg5NzEsImV4cCI6MjA4NzA3NDk3MX0.eIpFzw9w5qTQSixdw7_02fQLnsaz-DSa7dc74kfIE6o';
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Language toggle init
+    document.getElementById('langBtn').textContent = LANG === 'en' ? 'FR' : 'EN';
+    applyI18n();
 
     // Theme toggle
     function toggleTheme() {
@@ -1279,11 +1287,11 @@
       document.getElementById('tabLogin').classList.toggle('active', !isSignup);
       document.getElementById('signupForm').style.display = isSignup ? 'block' : 'none';
       document.getElementById('loginForm').style.display = isSignup ? 'none' : 'block';
-      document.getElementById('authTitle').textContent = isSignup ? 'Create account' : 'Welcome back';
-      document.getElementById('authSubtitle').textContent = isSignup ? 'Start receiving payments' : 'Log in to your dashboard';
+      document.getElementById('authTitle').textContent = isSignup ? t('Create account', 'Cr\u00e9er un compte') : t('Welcome back', 'Bon retour');
+      document.getElementById('authSubtitle').textContent = isSignup ? t('Start receiving payments', 'Commencez \u00e0 recevoir des paiements') : t('Log in to your dashboard', 'Connectez-vous \u00e0 votre tableau de bord');
       document.getElementById('switchAuth').innerHTML = isSignup
-        ? 'Already have an account? <a onclick="switchTab(\'login\')">Log in</a>'
-        : 'No account yet? <a onclick="switchTab(\'signup\')">Sign up</a>';
+        ? t('Already have an account?', 'D\u00e9j\u00e0 un compte ?') + ' <a onclick="switchTab(\'login\')">' + t('Log in', 'Se connecter') + '</a>'
+        : t('No account yet?', 'Pas encore de compte ?') + ' <a onclick="switchTab(\'signup\')">' + t('Sign up', 'S\'inscrire') + '</a>';
       clearAuthError();
     }
     function showAuthError(msg) { const el = document.getElementById('authError'); el.textContent = msg; el.classList.add('visible'); }
@@ -1295,16 +1303,16 @@
       const name = document.getElementById('signupName').value.trim();
       const email = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value;
-      if (!name || !email || !password) return showAuthError('Please fill in all fields.');
-      btn.disabled = true; btn.textContent = 'Creating...'; clearAuthError();
+      if (!name || !email || !password) return showAuthError(t('Please fill in all fields.', 'Remplissez tous les champs.'));
+      btn.disabled = true; btn.textContent = t('Creating...', 'Cr\u00e9ation...'); clearAuthError();
       try {
         const { data, error } = await sb.auth.signUp({ email, password, options: { data: { full_name: name } } });
-        if (error) { btn.disabled = false; btn.textContent = 'Create account'; return showAuthError(error.message); }
-        showToast('Account created! Redirecting...', 'success');
+        if (error) { btn.disabled = false; btn.textContent = t('Create account', 'Cr\u00e9er un compte'); return showAuthError(error.message); }
+        showToast(t('Account created! Redirecting...', 'Compte cr\u00e9\u00e9 ! Redirection...'), 'success');
         setTimeout(() => { window.location.href = '/dashboard.html'; }, 800);
       } catch (err) {
-        btn.disabled = false; btn.textContent = 'Create account';
-        showAuthError('Server connection error. Please check your internet connection.');
+        btn.disabled = false; btn.textContent = t('Create account', 'Cr\u00e9er un compte');
+        showAuthError(t('Server connection error. Please check your internet connection.', 'Erreur de connexion au serveur. V\u00e9rifiez votre connexion internet.'));
         console.error('Signup fetch error:', err);
       }
     }
@@ -1314,30 +1322,30 @@
       const btn = document.getElementById('loginBtn');
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
-      if (!email || !password) return showAuthError('Please fill in all fields.');
-      btn.disabled = true; btn.textContent = 'Logging in...'; clearAuthError();
+      if (!email || !password) return showAuthError(t('Please fill in all fields.', 'Remplissez tous les champs.'));
+      btn.disabled = true; btn.textContent = t('Logging in...', 'Connexion...'); clearAuthError();
       try {
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) { btn.disabled = false; btn.textContent = 'Log in'; return showAuthError(error.message); }
-        showToast('Connected!', 'success');
+        if (error) { btn.disabled = false; btn.textContent = t('Log in', 'Se connecter'); return showAuthError(error.message); }
+        showToast(t('Connected!', 'Connect\u00e9 !'), 'success');
         setTimeout(() => { window.location.href = '/dashboard.html'; }, 500);
       } catch (err) {
-        btn.disabled = false; btn.textContent = 'Log in';
-        showAuthError('Server connection error. Please check your internet connection.');
+        btn.disabled = false; btn.textContent = t('Log in', 'Se connecter');
+        showAuthError(t('Server connection error. Please check your internet connection.', 'Erreur de connexion au serveur. V\u00e9rifiez votre connexion internet.'));
         console.error('Login fetch error:', err);
       }
     }
 
     async function handleForgotPassword() {
       const email = document.getElementById('loginEmail').value.trim();
-      if (!email) return showAuthError('Enter your email above, then click "Forgot password?".');
+      if (!email) return showAuthError(t('Enter your email above, then click "Forgot password?".', 'Entrez votre email ci-dessus, puis cliquez sur \u00ab Mot de passe oubli\u00e9 ? \u00bb.'));
       try {
         const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/reset-password.html' });
         if (error) return showAuthError(error.message);
         closeAuth();
-        showToast('Password reset email sent!', 'success');
+        showToast(t('Password reset email sent!', 'Email de r\u00e9initialisation envoy\u00e9 !'), 'success');
       } catch (err) {
-        showAuthError('Server connection error. Please check your internet connection.');
+        showAuthError(t('Server connection error. Please check your internet connection.', 'Erreur de connexion au serveur. V\u00e9rifiez votre connexion internet.'));
         console.error('Password reset fetch error:', err);
       }
     }
