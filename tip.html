@@ -187,17 +187,9 @@
     .card-footer a:hover { color: var(--brand); }
     .card-footer svg { width: 14px; height: 14px; }
 
-    .lang-btn {
+    .lang-float {
       position: fixed; top: 16px; right: 16px; z-index: 50;
-      height: 36px; padding: 0 10px;
-      border-radius: var(--radius-xs);
-      border: 1px solid var(--color-border);
-      background: var(--color-surface); color: var(--color-text-secondary);
-      font-size: 13px; font-weight: 700; cursor: pointer;
-      font-family: var(--font); letter-spacing: 0.02em;
-      transition: all var(--duration);
     }
-    .lang-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-subtle); }
 
     @media (max-width: 440px) {
       body { padding: 0; align-items: flex-start; }
@@ -227,7 +219,10 @@
   </style>
 </head>
 <body>
-  <button class="lang-btn" onclick="toggleLang()" id="langBtn"></button>
+  <button class="lang-toggle lang-float" onclick="toggleLang()" id="langBtn" aria-label="Switch language">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+    <span id="langLabel"></span>
+  </button>
 
   <!-- LOADING -->
   <div class="loading-state" id="loading"><div class="spinner"></div></div>
@@ -312,7 +307,7 @@
     let card = null;
 
     // Set lang button text
-    document.getElementById('langBtn').textContent = LANG === 'en' ? 'FR' : 'EN';
+    document.getElementById('langLabel').textContent = LANG === 'en' ? 'FR' : 'EN';
     applyI18n();
 
     // ========== LOAD CARD ==========
