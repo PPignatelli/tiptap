@@ -287,7 +287,7 @@
 
   <!-- SUPABASE + STRIPE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://js.stripe.com/v3/" async></script>
   <script>
     const SUPABASE_URL = 'https://iuzylqpixymphydjmkeo.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1enlscXBpeHltcGh5ZGpta2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0OTg5NzEsImV4cCI6MjA4NzA3NDk3MX0.eIpFzw9w5qTQSixdw7_02fQLnsaz-DSa7dc74kfIE6o';
@@ -374,14 +374,24 @@
     }
 
     // ========== STRIPE SETUP ==========
-    const stripeInstance = Stripe(STRIPE_PK);
+    let stripeInstance = null;
     let paymentRequest = null;
     let nativePayAvailable = false;
     let stripeElements = null;
     let paymentElement = null;
     let clientSecret = null;
 
+    function getStripe() {
+      if (!stripeInstance && typeof Stripe !== 'undefined') {
+        stripeInstance = Stripe(STRIPE_PK);
+      }
+      return stripeInstance;
+    }
+
     async function setupPayment() {
+      const stripe = getStripe();
+      if (!stripe) { console.warn('Stripe not loaded'); return; }
+
       // 1. Create PaymentIntent via edge function
       try {
         const res = await fetch(EDGE_FN_URL + '/create-payment-intent', {
@@ -402,7 +412,7 @@
       }
 
       // 2. Setup Payment Request API (Apple Pay / Google Pay)
-      paymentRequest = stripeInstance.paymentRequest({
+      paymentRequest = stripe.paymentRequest({
         country: 'BE',
         currency: 'eur',
         total: {
@@ -419,7 +429,7 @@
 
       // Handle native payment completion
       paymentRequest.on('paymentmethod', async (ev) => {
-        const { error: confirmError } = await stripeInstance.confirmCardPayment(
+        const { error: confirmError } = await stripe.confirmCardPayment(
           clientSecret,
           { payment_method: ev.paymentMethod.id },
           { handleActions: false }
@@ -434,7 +444,7 @@
       });
 
       // 3. Setup Stripe Elements for card fallback
-      stripeElements = stripeInstance.elements({ clientSecret });
+      stripeElements = stripe.elements({ clientSecret });
       paymentElement = stripeElements.create('payment', {
         layout: 'tabs',
         wallets: { applePay: 'never', googlePay: 'never' }
@@ -442,9 +452,14 @@
     }
 
     // ========== PAY HANDLERS ==========
-    function handlePay(method) {
+    async function handlePay(method) {
+      // If Stripe wasn't ready before, try again now
+      if (!clientSecret && getStripe()) {
+        showToast('Chargement du paiement...', 'info');
+        await setupPayment().catch(() => {});
+      }
       if (!clientSecret) {
-        showToast('Chargement du paiement...', 'error');
+        showToast('Paiement indisponible, réessayez', 'error');
         return;
       }
 
@@ -490,7 +505,7 @@
       btn.disabled = true;
       btn.textContent = 'Traitement...';
 
-      const { error } = await stripeInstance.confirmPayment({
+      const { error } = await getStripe().confirmPayment({
         elements: stripeElements,
         confirmParams: {
           return_url: window.location.href + (window.location.search ? '&' : '?') + 'paid=1',
