@@ -376,7 +376,7 @@
 
   <!-- MAIN -->
   <div class="main" id="mainContent" style="display:none;">
-    <h1 class="page-title" data-i18n="Mes Cartes">My Cards</h1>
+    <h1 class="page-title" id="greetingTitle">My Cards</h1>
     <p class="page-subtitle" data-i18n="Créez du contenu exclusif, partagez le lien, recevez des paiements.">Create exclusive content, share the link, get paid.</p>
 
     <!-- EARNINGS DASHBOARD -->
@@ -499,6 +499,16 @@
         return;
       }
       document.getElementById('headerUser').textContent = currentUser.email;
+
+      // Greeting with name + random emoji
+      const emojis = ['\u{1F44B}','\u{1F680}','\u{2728}','\u{1F525}','\u{1F389}','\u{1F31F}','\u{1F4AA}','\u{1F3AF}','\u{1F60E}','\u{26A1}','\u{1F4B0}','\u{1F308}','\u{1F381}','\u{1F9E1}','\u{1F64C}'];
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      const firstName = currentUser.user_metadata?.full_name?.split(' ')[0] || '';
+      const greeting = firstName
+        ? (t('Hello', 'Bonjour') + ' ' + firstName + ' ' + emoji)
+        : (t('Hello', 'Bonjour') + ' ' + emoji);
+      document.getElementById('greetingTitle').textContent = greeting;
+
       await loadCards();
       document.getElementById('pageLoading').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
