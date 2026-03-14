@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin — TipsTap</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF6B35'/><text x='50' y='70' font-size='52' text-anchor='middle' fill='white' font-family='system-ui' font-weight='800'>T</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-system.css">
+  <script>
+    (function(){
+      var t = localStorage.getItem('tipstap-theme') ||
+        (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <style>
+    body { min-height: 100dvh; }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 24px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .admin-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--brand-light); color: var(--brand);
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px; border-radius: var(--radius-full);
+    }
+    .admin-badge svg { width: 14px; height: 14px; }
+
+    .back-link {
+      font-size: 13px; color: var(--color-text-secondary);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: color var(--duration);
+    }
+    .back-link:hover { color: var(--brand); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .btn-logout {
+      background: none; border: 1px solid var(--color-border); border-radius: var(--radius-xs);
+      padding: 6px 14px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer;
+      transition: all var(--duration); font-family: var(--font); font-weight: 500;
+    }
+    .btn-logout:hover { border-color: var(--color-error); color: var(--color-error); }
+
+    /* ===== MAIN ===== */
+    .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    .page-title {
+      font-size: 28px; font-weight: 800; margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .page-subtitle { color: var(--color-text-secondary); font-size: 15px; margin-bottom: 32px; }
+
+    /* ===== STATS GRID ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      border-top: 3px solid var(--color-border);
+      transition: all var(--duration);
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); }
+    .stat-card.brand { border-top-color: var(--brand); }
+    .stat-card.success { border-top-color: var(--color-success); }
+    .stat-card.info { border-top-color: var(--color-info); }
+    .stat-card.neutral { border-top-color: var(--color-text-tertiary); }
+
+    .stat-value {
+      font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 13px; font-weight: 500; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    /* ===== SECTION ===== */
+    .section { margin-bottom: 40px; }
+    .section-title {
+      font-size: 18px; font-weight: 700; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title svg { width: 20px; height: 20px; color: var(--color-text-tertiary); }
+
+    /* ===== TABLE ===== */
+    .table-container {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead {
+      position: sticky; top: 0; z-index: 2;
+    }
+    thead th {
+      background: var(--color-surface-inset);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px; font-weight: 700;
+      color: var(--color-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border-light);
+      white-space: nowrap;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--color-surface-subtle); }
+    tbody tr:hover { background: var(--brand-subtle); }
+
+    .text-secondary { color: var(--color-text-secondary); }
+    .text-success { color: var(--color-success); font-weight: 600; }
+    .text-muted { color: var(--color-text-tertiary); font-style: italic; }
+    .text-mono { font-family: var(--font-mono); font-size: 13px; }
+    .text-right { text-align: right; }
+
+    .iban-cell {
+      font-family: var(--font-mono); font-size: 12px;
+      max-width: 220px; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ===== LOADING ===== */
+    #pageLoading {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 60vh; color: var(--color-text-tertiary); gap: 16px;
+    }
+    .spinner {
+      width: 32px; height: 32px; border: 3px solid var(--color-border);
+      border-top-color: var(--brand); border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== ACCESS DENIED ===== */
+    .access-denied {
+      text-align: center; padding: 80px 24px;
+    }
+    .access-denied svg { width: 64px; height: 64px; color: var(--color-error); margin: 0 auto 16px; }
+    .access-denied h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .access-denied p { color: var(--color-text-secondary); font-size: 15px; margin-bottom: 24px; }
+    .access-denied a {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-weight: 600; font-size: 14px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .page-title { font-size: 22px; }
+      .page-subtitle { font-size: 14px; margin-bottom: 24px; }
+      .main { padding: 24px 16px; }
+      .header { padding: 0 16px; }
+      .header-inner { height: 54px; }
+      .back-link span { display: none; }
+      .stat-value { font-size: 24px; }
+      .btn-logout { padding: 6px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-wordmark">Tips<span>Tap</span></div>
+        <span class="admin-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Admin
+        </span>
+      </div>
+      <div class="header-right">
+        <a href="/dashboard.html" class="back-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span data-i18n="Retour au dashboard">Back to dashboard</span>
+        </a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <button class="btn-logout" onclick="logout()" data-i18n="Deconnexion">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOADING -->
+  <div id="pageLoading">
+    <div class="spinner"></div>
+    <span style="font-size:14px;" data-i18n="Chargement...">Loading...</span>
+  </div>
+
+  <!-- ACCESS DENIED -->
+  <div id="accessDenied" style="display:none;">
+    <div class="access-denied">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/></svg>
+      <h2 data-i18n="Acces refuse">Access denied</h2>
+      <p data-i18n="Vous n'avez pas la permission d'acceder a cette page.">You do not have permission to access this page.</p>
+      <a href="/index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span data-i18n="Retour a l'accueil">Back to home</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main" id="mainContent" style="display:none;">
+    <h1 class="page-title" data-i18n="Tableau de bord admin">Admin Dashboard</h1>
+    <p class="page-subtitle" data-i18n="Vue d'ensemble de tous les createurs, revenus et transactions.">Overview of all creators, earnings, and transactions.</p>
+
+    <!-- STATS -->
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <!-- CREATORS TABLE -->
+    <div class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span data-i18n="Createurs">Creators</span>
+      </h2>
+      <div class="table-container">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="Nom">Name</th>
+                <th>Email</th>
+                <th data-i18n="Cartes">Cards</th>
+                <th data-i18n="Revenu">Revenue</th>
+                <th data-i18n="A verser">Payout Due</th>
+                <th>IBAN</th>
+                <th data-i18n="Inscription">Joined</th>
+              </tr>
+            </thead>
+            <tbody id="creatorsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT TRANSACTIONS TABLE -->
+    <div class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span data-i18n="Transactions recentes">Recent Transactions</span>
+      </h2>
+      <div class="table-container">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th data-i18n="Createur">Creator</th>
+                <th data-i18n="Carte">Card</th>
+                <th data-i18n="Montant">Amount</th>
+                <th data-i18n="Frais (10%)">Fee (10%)</th>
+                <th>Net</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- SCRIPTS -->
+  <script src="/i18n.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://iuzylqpixymphydjmkeo.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml1enlscXBpeHltcGh5ZGpta2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0OTg5NzEsImV4cCI6MjA4NzA3NDk3MX0.eIpFzw9w5qTQSixdw7_02fQLnsaz-DSa7dc74kfIE6o';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const ADMIN_EMAIL = 'pignatellipierrelouis@gmail.com';
+
+    applyI18n();
+
+    // ========== HELPERS ==========
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function formatEur(cents) {
+      return (cents / 100).toFixed(2) + ' \u20AC';
+    }
+
+    function formatDate(isoStr) {
+      if (!isoStr) return '\u2014';
+      const d = new Date(isoStr);
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return dd + '/' + mm + '/' + yyyy;
+    }
+
+    function formatDateTime(isoStr) {
+      if (!isoStr) return '\u2014';
+      const d = new Date(isoStr);
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return dd + '/' + mm + '/' + yyyy + ' ' + hh + ':' + min;
+    }
+
+    function showToast(msg, type) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast visible ' + (type || '');
+      setTimeout(function() { el.classList.remove('visible'); }, 3000);
+    }
+
+    // ========== THEME ==========
+    function toggleTheme() {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('tipstap-theme', next);
+    }
+
+    // ========== AUTH ==========
+    async function logout() {
+      await sb.auth.signOut();
+      window.location.href = '/index.html';
+    }
+
+    // ========== INIT ==========
+    async function init() {
+      try {
+        var sessionRes = await sb.auth.getSession();
+        var session = sessionRes.data.session;
+        if (!session || session.user.email !== ADMIN_EMAIL) {
+          document.getElementById('pageLoading').style.display = 'none';
+          if (!session) {
+            window.location.href = '/index.html';
+          } else {
+            document.getElementById('accessDenied').style.display = 'block';
+          }
+          return;
+        }
+      } catch (err) {
+        console.error('Session check failed:', err);
+        window.location.href = '/index.html';
+        return;
+      }
+
+      await loadDashboard();
+    }
+
+    async function loadDashboard() {
+      try {
+        var res = await sb.rpc('get_admin_dashboard');
+        if (res.error) throw res.error;
+
+        var data = res.data;
+        renderStats(data.totals);
+        renderCreators(data.creators);
+        renderTransactions(data.recent_transactions);
+
+        document.getElementById('pageLoading').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+      } catch (err) {
+        console.error('Admin dashboard error:', err);
+        document.getElementById('pageLoading').style.display = 'none';
+        document.getElementById('accessDenied').style.display = 'block';
+      }
+    }
+
+    // ========== RENDER STATS ==========
+    function renderStats(totals) {
+      if (!totals) totals = {};
+      var grid = document.getElementById('statsGrid');
+      grid.innerHTML =
+        '<div class="stat-card brand">' +
+          '<div class="stat-value">' + escapeHtml(formatEur(totals.total_revenue || 0)) + '</div>' +
+          '<div class="stat-label">' + escapeHtml(t('Total Revenue', 'Revenu total')) + '</div>' +
+        '</div>' +
+        '<div class="stat-card success">' +
+          '<div class="stat-value">' + escapeHtml(formatEur(totals.total_fees || 0)) + '</div>' +
+          '<div class="stat-label">' + escapeHtml(t('Platform Fees', 'Frais plateforme')) + '</div>' +
+        '</div>' +
+        '<div class="stat-card info">' +
+          '<div class="stat-value">' + escapeHtml(formatEur(totals.total_payout || 0)) + '</div>' +
+          '<div class="stat-label">' + escapeHtml(t('Total Payouts', 'Total versements')) + '</div>' +
+        '</div>' +
+        '<div class="stat-card neutral">' +
+          '<div class="stat-value">' + escapeHtml(String(totals.transaction_count || 0)) + '</div>' +
+          '<div class="stat-label">' + escapeHtml(t('Transactions', 'Transactions')) + '</div>' +
+        '</div>';
+    }
+
+    // ========== RENDER CREATORS ==========
+    function renderCreators(creators) {
+      var tbody = document.getElementById('creatorsBody');
+      if (!creators || creators.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--color-text-tertiary);">' +
+          escapeHtml(t('No creators yet', 'Aucun createur pour le moment')) + '</td></tr>';
+        return;
+      }
+
+      // Sort by total_revenue descending
+      creators.sort(function(a, b) { return (b.total_revenue || 0) - (a.total_revenue || 0); });
+
+      var html = '';
+      for (var i = 0; i < creators.length; i++) {
+        var c = creators[i];
+        var name = c.full_name ? escapeHtml(c.full_name) : '<span class="text-muted">\u2014</span>';
+        var email = escapeHtml(c.email || '');
+        var cards = c.card_count || 0;
+        var revenue = formatEur(c.total_revenue || 0);
+        var payout = c.total_payout || 0;
+        var payoutClass = payout > 0 ? 'text-success' : '';
+        var payoutStr = formatEur(payout);
+        var iban = c.payout_iban
+          ? '<span class="iban-cell">' + escapeHtml(c.payout_iban) + '</span>'
+          : '<span class="text-muted">' + escapeHtml(t('Not set', 'Non renseigne')) + '</span>';
+        var joined = formatDate(c.created_at);
+
+        html += '<tr>' +
+          '<td>' + name + '</td>' +
+          '<td>' + email + '</td>' +
+          '<td class="text-right">' + escapeHtml(String(cards)) + '</td>' +
+          '<td class="text-right text-mono">' + escapeHtml(revenue) + '</td>' +
+          '<td class="text-right ' + payoutClass + ' text-mono">' + escapeHtml(payoutStr) + '</td>' +
+          '<td>' + iban + '</td>' +
+          '<td class="text-secondary">' + escapeHtml(joined) + '</td>' +
+        '</tr>';
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    // ========== RENDER TRANSACTIONS ==========
+    function renderTransactions(transactions) {
+      var tbody = document.getElementById('transactionsBody');
+      if (!transactions || transactions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--color-text-tertiary);">' +
+          escapeHtml(t('No transactions yet', 'Aucune transaction pour le moment')) + '</td></tr>';
+        return;
+      }
+
+      var html = '';
+      var limit = Math.min(transactions.length, 50);
+      for (var i = 0; i < limit; i++) {
+        var tx = transactions[i];
+        var date = formatDateTime(tx.created_at);
+        var creator = escapeHtml(tx.creator_name || tx.creator_email || '\u2014');
+        var card = escapeHtml(tx.card_title || tx.card_slug || '\u2014');
+        var amount = formatEur(tx.amount || 0);
+        var fee = formatEur(tx.platform_fee || 0);
+        var net = formatEur(tx.net_amount || 0);
+
+        html += '<tr>' +
+          '<td class="text-secondary">' + escapeHtml(date) + '</td>' +
+          '<td>' + creator + '</td>' +
+          '<td>' + card + '</td>' +
+          '<td class="text-right text-mono">' + escapeHtml(amount) + '</td>' +
+          '<td class="text-right text-mono">' + escapeHtml(fee) + '</td>' +
+          '<td class="text-right text-mono">' + escapeHtml(net) + '</td>' +
+        '</tr>';
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    // ========== GO ==========
+    init();
+  </script>
+</body>
+</html>

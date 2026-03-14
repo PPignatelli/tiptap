@@ -190,14 +190,14 @@
     .lang-btn {
       position: fixed; top: 16px; right: 16px; z-index: 50;
       height: 36px; padding: 0 10px;
-      border-radius: 8px; border: 1px solid var(--color-border);
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--color-border);
       background: var(--color-surface); color: var(--color-text-secondary);
       font-size: 13px; font-weight: 700; cursor: pointer;
       font-family: var(--font); letter-spacing: 0.02em;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.2s;
+      transition: all var(--duration);
     }
-    .lang-btn:hover { border-color: var(--brand); color: var(--brand); }
+    .lang-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-subtle); }
 
     @media (max-width: 440px) {
       body { padding: 0; align-items: flex-start; }
@@ -546,6 +546,10 @@
       document.getElementById('payButtons').style.display = 'none';
       document.getElementById('successMsg').classList.add('active');
       showToast(t('Payment successful!', 'Paiement réussi !'), 'success');
+      // Log transaction
+      if (card) {
+        sb.rpc('log_transaction', { p_card_id: card.id, p_amount: card.price }).then(() => {}, () => {});
+      }
     }
 
     function renderPayButtons() {
@@ -566,10 +570,10 @@
 
     // ========== UTILS ==========
     function showToast(msg, type = '') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast visible ' + type;
-      setTimeout(() => t.classList.remove('visible'), 3000);
+      const toastEl = document.getElementById('toast');
+      toastEl.textContent = msg;
+      toastEl.className = 'toast visible ' + type;
+      setTimeout(() => toastEl.classList.remove('visible'), 3000);
     }
 
     init();

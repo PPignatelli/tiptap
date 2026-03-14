@@ -96,11 +96,6 @@
       background: var(--brand); color: white;
     }
     .btn-copy:hover { background: var(--brand-hover); }
-    .btn-edit {
-      background: var(--color-info-light); color: var(--color-info);
-      border: 1px solid transparent !important;
-    }
-    .btn-edit:hover { background: var(--color-info); color: white; }
     .btn-delete {
       background: var(--color-surface-inset); color: var(--color-text-secondary);
       border: 1px solid var(--color-border) !important;
@@ -253,6 +248,26 @@
       animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ===== PAYOUT SECTION ===== */
+    .payout-section {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--color-border);
+    }
+    .payout-title {
+      font-size: 20px; font-weight: 700; margin-bottom: 4px;
+    }
+    .payout-desc {
+      font-size: 14px; color: var(--color-text-secondary);
+      margin-bottom: 24px;
+    }
+    .payout-form {
+      max-width: 420px;
+    }
+    .payout-form .btn-create {
+      margin-top: 4px;
+    }
+
     @media (max-width: 600px) {
       .cards-grid { grid-template-columns: 1fr; gap: 16px; }
       .page-title { font-size: 22px; }
@@ -318,6 +333,25 @@
     <div class="cards-grid" id="cardsGrid">
       <!-- Cards rendered here -->
     </div>
+
+    <!-- PAYOUT SETTINGS -->
+    <div class="payout-section" id="payoutSection">
+      <h2 class="payout-title" data-i18n="Paramètres de versement">Payout Settings</h2>
+      <p class="payout-desc" data-i18n="Vos gains sont versés par virement les 1er et 15 de chaque mois.">Your earnings are paid out by bank transfer on the 1st and 15th of each month.</p>
+      <div class="payout-form">
+        <div class="form-group">
+          <label for="payoutName" data-i18n="Titulaire du compte">Account holder name</label>
+          <input type="text" id="payoutName" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="payoutIban" data-i18n="IBAN">IBAN</label>
+          <input type="text" id="payoutIban" placeholder="BE68 5390 0754 7034" style="text-transform:uppercase;letter-spacing:1px;">
+        </div>
+        <button class="btn-create" id="btnSavePayout" onclick="savePayout()">
+          <span data-i18n="Enregistrer">Save</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- CREATE CARD MODAL -->
@@ -369,55 +403,6 @@
     </div>
   </div>
 
-  <!-- EDIT CARD MODAL -->
-  <div class="modal-overlay" id="editModalOverlay">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 data-i18n="Modifier la carte">Edit card</h2>
-        <button class="modal-close" onclick="closeEditModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label data-i18n="Photo ou Vidéo">Photo or Video</label>
-          <div class="upload-zone" id="editUploadZone" onclick="document.getElementById('editFileInput').click()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
-            <p data-i18n="Cliquez pour changer le média">Click to change media</p>
-            <span class="hint" data-i18n="Laissez vide pour garder l'actuel">Leave empty to keep current</span>
-          </div>
-          <div class="upload-preview" id="editUploadPreview"></div>
-          <input type="file" id="editFileInput" accept="image/*,video/*" style="display:none" onchange="handleEditFileSelect(this)">
-        </div>
-        <div class="form-group">
-          <label data-i18n="Photo de profil">Profile picture</label>
-          <div class="avatar-upload">
-            <div class="avatar-preview" id="editAvatarPreview">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            </div>
-            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()" data-i18n="Changer la photo">Change photo</button>
-          </div>
-          <input type="file" id="editAvatarInput" accept="image/*" style="display:none" onchange="handleEditAvatarSelect(this)">
-        </div>
-        <div class="form-group">
-          <label for="editCardTitle" data-i18n="Titre">Title</label>
-          <input type="text" id="editCardTitle" placeholder="Ex: Photo exclusive...">
-        </div>
-        <div class="form-group">
-          <label for="editCardPrice" data-i18n="Prix (€)">Price (€)</label>
-          <input type="number" id="editCardPrice" min="1" max="999" step="0.5" placeholder="5">
-        </div>
-        <div class="form-group">
-          <label for="editCardSlug" data-i18n="Lien personnalisé">Custom link</label>
-          <input type="text" id="editCardSlug" placeholder="my-vip-content" oninput="updateEditSlugPreview()">
-          <div class="slug-preview"><span data-i18n="Lien :">Link:</span> <span id="editSlugUrl"></span></div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" onclick="closeEditModal()" data-i18n="Annuler">Cancel</button>
-        <button class="btn-create" id="btnSaveEdit" onclick="saveEditCard()" data-i18n="Enregistrer">Save</button>
-      </div>
-    </div>
-  </div>
-
   <div class="toast" id="toast"></div>
 
   <!-- SUPABASE -->
@@ -460,6 +445,7 @@
       document.getElementById('pageLoading').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
       renderCards();
+      loadPayoutSettings();
     }
 
     async function logout() {
@@ -525,7 +511,6 @@
               </div>
               <div class="card-actions">
                 <button class="btn-copy" onclick="copyLink('${escapeHtml(card.slug)}')">${t('Copy', 'Copier')}</button>
-                <button class="btn-edit" onclick="openEditModal('${card.id}')">${t('Edit', 'Modifier')}</button>
                 <button class="btn-delete" onclick="deleteCard('${card.id}')">${t('Delete', 'Supprimer')}</button>
               </div>
             </div>
@@ -750,160 +735,38 @@
     }
 
     function showToast(msg, type = '') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast visible ' + type;
-      setTimeout(() => t.classList.remove('visible'), 3000);
+      const toastEl = document.getElementById('toast');
+      toastEl.textContent = msg;
+      toastEl.className = 'toast visible ' + type;
+      setTimeout(() => toastEl.classList.remove('visible'), 3000);
     }
 
-    // ========== EDIT CARD ==========
-    let editingCard = null;
-    let editSelectedFile = null;
-    let editSelectedAvatar = null;
-
-    function openEditModal(cardId) {
-      editingCard = cards.find(c => c.id === cardId);
-      if (!editingCard) return;
-
-      editSelectedFile = null;
-      editSelectedAvatar = null;
-      document.getElementById('editFileInput').value = '';
-      document.getElementById('editAvatarInput').value = '';
-      document.getElementById('btnSaveEdit').disabled = false;
-      document.getElementById('btnSaveEdit').textContent = t('Save', 'Enregistrer');
-
-      // Pre-fill fields
-      document.getElementById('editCardTitle').value = editingCard.title || '';
-      document.getElementById('editCardPrice').value = (editingCard.price / 100).toString();
-      document.getElementById('editCardSlug').value = editingCard.slug || '';
-      updateEditSlugPreview();
-
-      // Show current media preview
-      const preview = document.getElementById('editUploadPreview');
-      if (editingCard.media_type === 'video') {
-        preview.innerHTML = '<video src="' + escapeHtml(editingCard.media_url) + '" muted autoplay loop playsinline style="width:100%;max-height:200px;object-fit:cover;"></video>';
-      } else {
-        preview.innerHTML = '<img src="' + escapeHtml(editingCard.media_url) + '" style="width:100%;max-height:200px;object-fit:cover;" alt="">';
-      }
-      preview.style.display = 'block';
-      const zone = document.getElementById('editUploadZone');
-      zone.classList.add('has-file');
-      zone.querySelector('p').textContent = t('Current media', 'Média actuel');
-
-      // Show current avatar
-      const avatarPreview = document.getElementById('editAvatarPreview');
-      if (editingCard.avatar_url) {
-        avatarPreview.innerHTML = '<img src="' + escapeHtml(editingCard.avatar_url) + '" alt="">';
-      } else {
-        avatarPreview.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-      }
-
-      document.getElementById('editModalOverlay').classList.add('active');
-    }
-
-    function closeEditModal() {
-      document.getElementById('editModalOverlay').classList.remove('active');
-      editingCard = null;
-    }
-
-    // Close on overlay click
-    document.getElementById('editModalOverlay').addEventListener('click', e => {
-      if (e.target === e.currentTarget) closeEditModal();
-    });
-
-    function handleEditFileSelect(input) {
-      const file = input.files[0];
-      if (!file) return;
-      if (file.size > 50 * 1024 * 1024) { showToast(t('File too large (max 50 MB)', 'Fichier trop volumineux (max 50 MB)'), 'error'); return; }
-      editSelectedFile = file;
-      const zone = document.getElementById('editUploadZone');
-      zone.classList.add('has-file');
-      zone.querySelector('p').textContent = file.name;
-      const preview = document.getElementById('editUploadPreview');
-      preview.style.display = 'block';
-      if (file.type.startsWith('video/')) {
-        preview.innerHTML = '<video src="' + URL.createObjectURL(file) + '" muted autoplay loop playsinline style="width:100%;max-height:200px;object-fit:cover;"></video>';
-      } else {
-        preview.innerHTML = '<img src="' + URL.createObjectURL(file) + '" style="width:100%;max-height:200px;object-fit:cover;" alt="">';
+    // ========== PAYOUT SETTINGS ==========
+    async function loadPayoutSettings() {
+      const { data } = await sb.from('profiles').select('payout_name, payout_iban').eq('id', currentUser.id).single();
+      if (data) {
+        document.getElementById('payoutName').value = data.payout_name || '';
+        document.getElementById('payoutIban').value = data.payout_iban || '';
       }
     }
 
-    function handleEditAvatarSelect(input) {
-      const file = input.files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { showToast(t('Photo too large (max 5 MB)', 'Photo trop volumineuse (max 5 MB)'), 'error'); return; }
-      editSelectedAvatar = file;
-      document.getElementById('editAvatarPreview').innerHTML = '<img src="' + URL.createObjectURL(file) + '" alt="">';
-    }
+    async function savePayout() {
+      const name = document.getElementById('payoutName').value.trim();
+      const iban = document.getElementById('payoutIban').value.trim().toUpperCase().replace(/\s+/g, '');
 
-    function updateEditSlugPreview() {
-      const raw = document.getElementById('editCardSlug').value.trim();
-      const slug = sanitizeSlug(raw) || '...';
-      document.getElementById('editSlugUrl').textContent = window.location.origin + '/c/' + slug;
-    }
+      if (!name || !iban) return showToast(t('Please fill in all fields', 'Remplissez tous les champs'), 'error');
 
-    async function saveEditCard() {
-      if (!editingCard) return;
-
-      const price = Math.round(parseFloat(document.getElementById('editCardPrice').value) * 100);
-      if (!price || price < 100) return showToast(t('Minimum price: €1', 'Prix minimum : 1 €'), 'error');
-
-      const rawSlug = document.getElementById('editCardSlug').value.trim();
-      const slug = rawSlug ? sanitizeSlug(rawSlug) : editingCard.slug;
-      if (!slug) return showToast(t('Invalid link', 'Lien invalide'), 'error');
-
-      // Check slug uniqueness if changed
-      if (slug !== editingCard.slug) {
-        const { data: existing } = await sb.from('cards').select('id').eq('slug', slug).maybeSingle();
-        if (existing) return showToast(t('This link is already taken', 'Ce lien est déjà pris'), 'error');
-      }
-
-      const btn = document.getElementById('btnSaveEdit');
+      const btn = document.getElementById('btnSavePayout');
       btn.disabled = true;
-      btn.textContent = t('Saving...', 'Enregistrement...');
 
-      try {
-        const updates = {
-          title: document.getElementById('editCardTitle').value.trim() || null,
-          price: price,
-          slug: slug,
-        };
+      const { error } = await sb.from('profiles').update({ payout_name: name, payout_iban: iban }).eq('id', currentUser.id);
 
-        // Upload new media if selected
-        if (editSelectedFile) {
-          const ext = editSelectedFile.name.split('.').pop().toLowerCase();
-          const mediaType = editSelectedFile.type.startsWith('video/') ? 'video' : 'image';
-          const filePath = currentUser.id + '/' + Date.now() + '.' + ext;
-          const { error: uploadErr } = await sb.storage.from('media').upload(filePath, editSelectedFile, { cacheControl: '3600', upsert: false });
-          if (uploadErr) throw uploadErr;
-          const { data: urlData } = sb.storage.from('media').getPublicUrl(filePath);
-          updates.media_url = urlData.publicUrl;
-          updates.media_type = mediaType;
-        }
-
-        // Upload new avatar if selected
-        if (editSelectedAvatar) {
-          const avatarExt = editSelectedAvatar.name.split('.').pop().toLowerCase();
-          const avatarPath = currentUser.id + '/avatar-' + Date.now() + '.' + avatarExt;
-          const { error: avatarErr } = await sb.storage.from('media').upload(avatarPath, editSelectedAvatar, { cacheControl: '3600', upsert: false });
-          if (avatarErr) throw avatarErr;
-          const { data: avatarData } = sb.storage.from('media').getPublicUrl(avatarPath);
-          updates.avatar_url = avatarData.publicUrl;
-        }
-
-        const { error: updateErr } = await sb.from('cards').update(updates).eq('id', editingCard.id);
-        if (updateErr) throw updateErr;
-
-        closeEditModal();
-        showToast(t('Card updated!', 'Carte modifiée !'), 'success');
-        await loadCards();
-        renderCards();
-      } catch (err) {
-        console.error('Edit card error:', err);
-        showToast(t('Error: ', 'Erreur : ') + (err.message || t('Failed', 'Échec')), 'error');
-        btn.disabled = false;
-        btn.textContent = t('Save', 'Enregistrer');
+      if (error) {
+        showToast(t('Error saving', 'Erreur lors de l\'enregistrement'), 'error');
+      } else {
+        showToast(t('Payout info saved!', 'Informations de versement enregistrées !'), 'success');
       }
+      btn.disabled = false;
     }
 
     // ========== INIT ==========

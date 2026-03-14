@@ -1351,9 +1351,9 @@
     }
 
     function showToast(msg, type = '') {
-      const t = document.getElementById('toast');
-      t.textContent = msg; t.className = 'toast visible ' + type;
-      setTimeout(() => t.classList.remove('visible'), 3000);
+      const toastEl = document.getElementById('toast');
+      toastEl.textContent = msg; toastEl.className = 'toast visible ' + type;
+      setTimeout(() => toastEl.classList.remove('visible'), 3000);
     }
 
     function toggleFaq(btn) { btn.closest('.faq-item').classList.toggle('open'); }
