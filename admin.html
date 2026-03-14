@@ -154,27 +154,23 @@
       max-width: 220px; overflow: hidden; text-overflow: ellipsis;
     }
 
-    .btn-mark-paid {
+    .btn-pay {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px; border-radius: var(--radius-xs);
-      border: 1px solid var(--brand); background: var(--brand-light);
-      color: var(--brand); font-size: 12px; font-weight: 600;
+      padding: 8px 16px; border-radius: var(--radius-xs);
+      border: 1px solid var(--brand); background: var(--brand);
+      color: white; font-size: 13px; font-weight: 700;
       cursor: pointer; font-family: var(--font);
       transition: all var(--duration); white-space: nowrap;
     }
-    .btn-mark-paid:hover { background: var(--brand); color: white; }
-    .btn-mark-paid:disabled {
-      opacity: 0.5; cursor: not-allowed;
-      border-color: var(--color-border); background: var(--color-surface-inset);
-      color: var(--color-text-tertiary);
-    }
-    .btn-mark-paid:disabled:hover { background: var(--color-surface-inset); color: var(--color-text-tertiary); }
+    .btn-pay:hover { background: var(--brand-hover); }
 
-    .badge-paid {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 4px 10px; border-radius: var(--radius-full);
-      background: var(--color-success-light); color: var(--color-success);
-      font-size: 12px; font-weight: 600;
+    .btn-paid {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 8px 16px; border-radius: var(--radius-xs);
+      border: 1px solid var(--color-success); background: var(--color-success);
+      color: white; font-size: 13px; font-weight: 700;
+      cursor: default; font-family: var(--font);
+      white-space: nowrap;
     }
 
     .btn-delete-creator {
@@ -506,10 +502,11 @@
 
         var paidBtn;
         if (unpaid > 0) {
-          paidBtn = '<button class="btn-mark-paid" onclick="markAsPaid(\'' + escapeHtml(c.id) + '\')">' +
-            escapeHtml(t('Mark as Paid', 'Marquer paye')) + '</button>';
+          paidBtn = '<button class="btn-pay" onclick="markAsPaid(\'' + escapeHtml(c.id) + '\')">' +
+            escapeHtml(t('Pay ', 'Payer ') + formatEur(unpaid)) + '</button>';
         } else {
-          paidBtn = '<span class="badge-paid">' + escapeHtml(t('Paid', 'Paye')) + '</span>';
+          paidBtn = '<button class="btn-paid" disabled>' +
+            escapeHtml(t('Paid', 'Paye')) + ' \u2713</button>';
         }
         var deleteBtn = '<button class="btn-delete-creator" onclick="deleteCreator(\'' + escapeHtml(c.id) + '\', \'' + email + '\')">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>' +
