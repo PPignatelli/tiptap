@@ -380,9 +380,12 @@
     <p class="page-subtitle" data-i18n="Créez du contenu exclusif, partagez le lien, recevez des paiements.">Create exclusive content, share the link, get paid.</p>
 
     <!-- EARNINGS DASHBOARD -->
-    <div id="earningsSection" style="display:none;">
-      <div class="earnings-grid" id="earningsGrid"></div>
-      <p class="earnings-fee-note" data-i18n="Net = après 10 % de frais de plateforme. Versements les 1er et 15 de chaque mois.">Net = after 10% platform fee. Payouts on the 1st and 15th of each month.</p>
+    <div id="earningsSection">
+      <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;" data-i18n="Vos revenus">Your Earnings</h2>
+      <p class="earnings-fee-note" style="margin-bottom:16px;" data-i18n="Net = après 10 % de frais de plateforme. Versements les 1er et 15 de chaque mois.">Net = after 10% platform fee. Payouts on the 1st and 15th of each month.</p>
+      <div class="earnings-grid" id="earningsGrid">
+        <!-- Filled by JS, shows 0 by default -->
+      </div>
     </div>
 
     <div class="cards-grid" id="cardsGrid">
@@ -826,27 +829,25 @@
     }
 
     // ========== EARNINGS DASHBOARD ==========
-    async function loadEarnings() {
-      try {
-        const res = await sb.rpc('get_creator_earnings');
-        if (res.error) throw res.error;
-        renderEarnings(res.data);
-      } catch (err) {
-        console.error('Earnings load error:', err);
-      }
-    }
-
     function formatEur(cents) {
       return (cents / 100).toFixed(2) + ' \u20AC';
     }
 
-    function renderEarnings(data) {
-      if (!data) return;
-      const hasAny = (data.total_count || 0) > 0;
-      const section = document.getElementById('earningsSection');
-      if (!hasAny) { section.style.display = 'none'; return; }
+    async function loadEarnings() {
+      // Render 0s immediately so the section is always visible
+      renderEarnings({});
+      try {
+        const res = await sb.rpc('get_creator_earnings');
+        if (res.error) throw res.error;
+        if (res.data) renderEarnings(res.data);
+      } catch (err) {
+        console.error('Earnings load error:', err);
+        // Still shows 0s — section remains visible
+      }
+    }
 
-      section.style.display = 'block';
+    function renderEarnings(data) {
+      if (!data) data = {};
       const grid = document.getElementById('earningsGrid');
 
       grid.innerHTML =
