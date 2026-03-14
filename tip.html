@@ -321,8 +321,8 @@
       document.getElementById('errorState').style.display = 'block';
     }
 
-    function trackStat(statName) {
-      sb.rpc('increment_card_stat', { card_slug: card.slug, stat_name: statName }).catch(() => {});
+    async function trackStat(statName) {
+      try { await sb.rpc('increment_card_stat', { card_slug: card.slug, stat_name: statName }); } catch(e) {}
     }
 
     function renderCard() {
