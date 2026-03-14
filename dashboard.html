@@ -248,6 +248,52 @@
       animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ===== EARNINGS DASHBOARD ===== */
+    .earnings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .earnings-card {
+      background: var(--color-surface-raised);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      border-top: 3px solid var(--color-border);
+      transition: all var(--duration);
+    }
+    .earnings-card:hover { box-shadow: var(--shadow-md); }
+    .earnings-card.today { border-top-color: var(--brand); }
+    .earnings-card.month { border-top-color: var(--color-info); }
+    .earnings-card.total { border-top-color: var(--color-success); }
+
+    .earnings-label {
+      font-size: 12px; font-weight: 600; color: var(--color-text-secondary);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+    .earnings-net {
+      font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+      margin-bottom: 2px;
+    }
+    .earnings-gross {
+      font-size: 13px; color: var(--color-text-tertiary);
+    }
+    .earnings-count {
+      font-size: 12px; color: var(--color-text-tertiary);
+      margin-top: 6px;
+    }
+    .earnings-fee-note {
+      font-size: 12px; color: var(--color-text-tertiary);
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 600px) {
+      .earnings-grid { grid-template-columns: 1fr; gap: 12px; }
+      .earnings-net { font-size: 22px; }
+    }
+
     /* ===== PAYOUT SECTION ===== */
     .payout-section {
       margin-top: 48px;
@@ -332,6 +378,12 @@
   <div class="main" id="mainContent" style="display:none;">
     <h1 class="page-title" data-i18n="Mes Cartes">My Cards</h1>
     <p class="page-subtitle" data-i18n="Créez du contenu exclusif, partagez le lien, recevez des paiements.">Create exclusive content, share the link, get paid.</p>
+
+    <!-- EARNINGS DASHBOARD -->
+    <div id="earningsSection" style="display:none;">
+      <div class="earnings-grid" id="earningsGrid"></div>
+      <p class="earnings-fee-note" data-i18n="Net = après 10 % de frais de plateforme. Versements les 1er et 15 de chaque mois.">Net = after 10% platform fee. Payouts on the 1st and 15th of each month.</p>
+    </div>
 
     <div class="cards-grid" id="cardsGrid">
       <!-- Cards rendered here -->
@@ -449,6 +501,7 @@
       document.getElementById('mainContent').style.display = 'block';
       renderCards();
       loadPayoutSettings();
+      loadEarnings();
     }
 
     async function logout() {
@@ -770,6 +823,51 @@
         showToast(t('Payout info saved!', 'Informations de versement enregistrées !'), 'success');
       }
       btn.disabled = false;
+    }
+
+    // ========== EARNINGS DASHBOARD ==========
+    async function loadEarnings() {
+      try {
+        const res = await sb.rpc('get_creator_earnings');
+        if (res.error) throw res.error;
+        renderEarnings(res.data);
+      } catch (err) {
+        console.error('Earnings load error:', err);
+      }
+    }
+
+    function formatEur(cents) {
+      return (cents / 100).toFixed(2) + ' \u20AC';
+    }
+
+    function renderEarnings(data) {
+      if (!data) return;
+      const hasAny = (data.total_count || 0) > 0;
+      const section = document.getElementById('earningsSection');
+      if (!hasAny) { section.style.display = 'none'; return; }
+
+      section.style.display = 'block';
+      const grid = document.getElementById('earningsGrid');
+
+      grid.innerHTML =
+        '<div class="earnings-card today">' +
+          '<div class="earnings-label">' + escapeHtml(t('Today', "Aujourd'hui")) + '</div>' +
+          '<div class="earnings-net">' + escapeHtml(formatEur(data.today_net || 0)) + '</div>' +
+          '<div class="earnings-gross">' + escapeHtml(t('Gross: ', 'Brut : ') + formatEur(data.today_gross || 0)) + '</div>' +
+          '<div class="earnings-count">' + escapeHtml(String(data.today_count || 0)) + ' ' + escapeHtml(t('transactions', 'transactions')) + '</div>' +
+        '</div>' +
+        '<div class="earnings-card month">' +
+          '<div class="earnings-label">' + escapeHtml(t('This month', 'Ce mois')) + '</div>' +
+          '<div class="earnings-net">' + escapeHtml(formatEur(data.month_net || 0)) + '</div>' +
+          '<div class="earnings-gross">' + escapeHtml(t('Gross: ', 'Brut : ') + formatEur(data.month_gross || 0)) + '</div>' +
+          '<div class="earnings-count">' + escapeHtml(String(data.month_count || 0)) + ' ' + escapeHtml(t('transactions', 'transactions')) + '</div>' +
+        '</div>' +
+        '<div class="earnings-card total">' +
+          '<div class="earnings-label">' + escapeHtml(t('All time', 'Total')) + '</div>' +
+          '<div class="earnings-net">' + escapeHtml(formatEur(data.total_net || 0)) + '</div>' +
+          '<div class="earnings-gross">' + escapeHtml(t('Gross: ', 'Brut : ') + formatEur(data.total_gross || 0)) + '</div>' +
+          '<div class="earnings-count">' + escapeHtml(String(data.total_count || 0)) + ' ' + escapeHtml(t('transactions', 'transactions')) + '</div>' +
+        '</div>';
     }
 
     // ========== INIT ==========

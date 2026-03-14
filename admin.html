@@ -154,6 +154,29 @@
       max-width: 220px; overflow: hidden; text-overflow: ellipsis;
     }
 
+    .btn-mark-paid {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px; border-radius: var(--radius-xs);
+      border: 1px solid var(--brand); background: var(--brand-light);
+      color: var(--brand); font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: var(--font);
+      transition: all var(--duration); white-space: nowrap;
+    }
+    .btn-mark-paid:hover { background: var(--brand); color: white; }
+    .btn-mark-paid:disabled {
+      opacity: 0.5; cursor: not-allowed;
+      border-color: var(--color-border); background: var(--color-surface-inset);
+      color: var(--color-text-tertiary);
+    }
+    .btn-mark-paid:disabled:hover { background: var(--color-surface-inset); color: var(--color-text-tertiary); }
+
+    .badge-paid {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: var(--radius-full);
+      background: var(--color-success-light); color: var(--color-success);
+      font-size: 12px; font-weight: 600;
+    }
+
     /* ===== LOADING ===== */
     #pageLoading {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -269,6 +292,7 @@
                 <th data-i18n="A verser">Payout Due</th>
                 <th>IBAN</th>
                 <th data-i18n="Inscription">Joined</th>
+                <th data-i18n="Action">Action</th>
               </tr>
             </thead>
             <tbody id="creatorsBody"></tbody>
@@ -425,8 +449,8 @@
           '<div class="stat-label">' + escapeHtml(t('Platform Fees', 'Frais plateforme')) + '</div>' +
         '</div>' +
         '<div class="stat-card info">' +
-          '<div class="stat-value">' + escapeHtml(formatEur(totals.total_payout || 0)) + '</div>' +
-          '<div class="stat-label">' + escapeHtml(t('Total Payouts', 'Total versements')) + '</div>' +
+          '<div class="stat-value">' + escapeHtml(formatEur(totals.total_unpaid || 0)) + '</div>' +
+          '<div class="stat-label">' + escapeHtml(t('To Pay Out', 'A verser')) + '</div>' +
         '</div>' +
         '<div class="stat-card neutral">' +
           '<div class="stat-value">' + escapeHtml(String(totals.transaction_count || 0)) + '</div>' +
@@ -438,13 +462,16 @@
     function renderCreators(creators) {
       var tbody = document.getElementById('creatorsBody');
       if (!creators || creators.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--color-text-tertiary);">' +
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--color-text-tertiary);">' +
           escapeHtml(t('No creators yet', 'Aucun createur pour le moment')) + '</td></tr>';
         return;
       }
 
-      // Sort by total_revenue descending
-      creators.sort(function(a, b) { return (b.total_revenue || 0) - (a.total_revenue || 0); });
+      // Sort by unpaid_amount descending, then total_revenue
+      creators.sort(function(a, b) {
+        var diff = (b.unpaid_amount || 0) - (a.unpaid_amount || 0);
+        return diff !== 0 ? diff : (b.total_revenue || 0) - (a.total_revenue || 0);
+      });
 
       var html = '';
       for (var i = 0; i < creators.length; i++) {
@@ -453,22 +480,31 @@
         var email = escapeHtml(c.email || '');
         var cards = c.card_count || 0;
         var revenue = formatEur(c.total_revenue || 0);
-        var payout = c.total_payout || 0;
-        var payoutClass = payout > 0 ? 'text-success' : '';
-        var payoutStr = formatEur(payout);
+        var unpaid = c.unpaid_amount || 0;
+        var unpaidClass = unpaid > 0 ? 'text-success' : '';
+        var unpaidStr = formatEur(unpaid);
         var iban = c.payout_iban
           ? '<span class="iban-cell">' + escapeHtml(c.payout_iban) + '</span>'
           : '<span class="text-muted">' + escapeHtml(t('Not set', 'Non renseigne')) + '</span>';
         var joined = formatDate(c.created_at);
+
+        var actionCell;
+        if (unpaid > 0) {
+          actionCell = '<button class="btn-mark-paid" onclick="markAsPaid(\'' + escapeHtml(c.id) + '\')">' +
+            escapeHtml(t('Mark as Paid', 'Marquer paye')) + '</button>';
+        } else {
+          actionCell = '<span class="badge-paid">' + escapeHtml(t('Paid', 'Paye')) + '</span>';
+        }
 
         html += '<tr>' +
           '<td>' + name + '</td>' +
           '<td>' + email + '</td>' +
           '<td class="text-right">' + escapeHtml(String(cards)) + '</td>' +
           '<td class="text-right text-mono">' + escapeHtml(revenue) + '</td>' +
-          '<td class="text-right ' + payoutClass + ' text-mono">' + escapeHtml(payoutStr) + '</td>' +
+          '<td class="text-right ' + unpaidClass + ' text-mono">' + escapeHtml(unpaidStr) + '</td>' +
           '<td>' + iban + '</td>' +
           '<td class="text-secondary">' + escapeHtml(joined) + '</td>' +
+          '<td>' + actionCell + '</td>' +
         '</tr>';
       }
 
@@ -506,6 +542,25 @@
       }
 
       tbody.innerHTML = html;
+    }
+
+    // ========== MARK AS PAID ==========
+    async function markAsPaid(creatorId) {
+      var ok = confirm(t(
+        'Confirm this creator has been paid? This will reset their payout balance to 0.',
+        'Confirmer que ce createur a ete paye ? Cela remettra son solde a verser a 0.'
+      ));
+      if (!ok) return;
+
+      try {
+        var res = await sb.rpc('mark_creator_paid', { p_creator_id: creatorId });
+        if (res.error) throw res.error;
+        showToast(t('Creator marked as paid', 'Createur marque comme paye'), 'success');
+        await loadDashboard();
+      } catch (err) {
+        console.error('Mark as paid error:', err);
+        showToast(t('Error marking as paid', 'Erreur lors du marquage'), 'error');
+      }
     }
 
     // ========== GO ==========
