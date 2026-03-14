@@ -321,9 +321,16 @@
       document.getElementById('errorState').style.display = 'block';
     }
 
+    function trackStat(statName) {
+      sb.rpc('increment_card_stat', { card_slug: card.slug, stat_name: statName }).catch(() => {});
+    }
+
     function renderCard() {
       document.getElementById('loading').style.display = 'none';
       document.getElementById('cardContainer').style.display = 'block';
+
+      // Track view
+      trackStat('views');
 
       // Avatar
       if (card.avatar_url) {
@@ -440,6 +447,9 @@
         showToast('Chargement du paiement...', 'error');
         return;
       }
+
+      // Track click
+      trackStat('clicks');
 
       if (method === 'apple' || method === 'google') {
         if (nativePayAvailable && paymentRequest) {

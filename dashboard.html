@@ -76,6 +76,17 @@
     .card-body { padding: 16px; }
     .card-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
     .card-price { font-size: 22px; font-weight: 800; color: var(--brand); margin-bottom: 12px; }
+    /* Stats row */
+    .card-stats {
+      display: flex; gap: 16px; margin-bottom: 12px;
+      font-size: 13px; color: var(--color-text-secondary);
+    }
+    .card-stat {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .card-stat svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .card-stat strong { color: var(--color-text); font-weight: 700; }
+
     .card-actions { display: flex; gap: 8px; }
     .card-actions button {
       flex: 1; padding: 8px; border-radius: var(--radius-xs); font-size: 13px;
@@ -85,6 +96,11 @@
       background: var(--brand); color: white;
     }
     .btn-copy:hover { background: var(--brand-hover); }
+    .btn-edit {
+      background: var(--color-info-light); color: var(--color-info);
+      border: 1px solid transparent !important;
+    }
+    .btn-edit:hover { background: var(--color-info); color: white; }
     .btn-delete {
       background: var(--color-surface-inset); color: var(--color-text-secondary);
       border: 1px solid var(--color-border) !important;
@@ -352,6 +368,55 @@
     </div>
   </div>
 
+  <!-- EDIT CARD MODAL -->
+  <div class="modal-overlay" id="editModalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Modifier la carte</h2>
+        <button class="modal-close" onclick="closeEditModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Photo ou Vidéo</label>
+          <div class="upload-zone" id="editUploadZone" onclick="document.getElementById('editFileInput').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L8 8m4-4l4 4"/><path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/></svg>
+            <p>Cliquez pour changer le média</p>
+            <span class="hint">Laissez vide pour garder l'actuel</span>
+          </div>
+          <div class="upload-preview" id="editUploadPreview"></div>
+          <input type="file" id="editFileInput" accept="image/*,video/*" style="display:none" onchange="handleEditFileSelect(this)">
+        </div>
+        <div class="form-group">
+          <label>Photo de profil</label>
+          <div class="avatar-upload">
+            <div class="avatar-preview" id="editAvatarPreview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <button type="button" class="avatar-upload-btn" onclick="document.getElementById('editAvatarInput').click()">Changer la photo</button>
+          </div>
+          <input type="file" id="editAvatarInput" accept="image/*" style="display:none" onchange="handleEditAvatarSelect(this)">
+        </div>
+        <div class="form-group">
+          <label for="editCardTitle">Titre</label>
+          <input type="text" id="editCardTitle" placeholder="Ex: Photo exclusive...">
+        </div>
+        <div class="form-group">
+          <label for="editCardPrice">Prix (€)</label>
+          <input type="number" id="editCardPrice" min="1" max="999" step="0.5" placeholder="5">
+        </div>
+        <div class="form-group">
+          <label for="editCardSlug">Lien personnalisé</label>
+          <input type="text" id="editCardSlug" placeholder="mon-contenu-vip" oninput="updateEditSlugPreview()">
+          <div class="slug-preview">Lien : <span id="editSlugUrl"></span></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeEditModal()">Annuler</button>
+        <button class="btn-create" id="btnSaveEdit" onclick="saveEditCard()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <!-- SUPABASE -->
@@ -429,6 +494,8 @@
         const avatarHtml = card.avatar_url
           ? `<img src="${escapeHtml(card.avatar_url)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--color-border);" alt="">`
           : '';
+        const views = card.views || 0;
+        const clicks = card.clicks || 0;
 
         html += `
           <div class="card-item">
@@ -439,9 +506,20 @@
                 <div class="card-title">${card.title ? escapeHtml(card.title) : 'Sans titre'}</div>
               </div>
               <div class="card-price">${priceEur} €</div>
-              <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px;word-break:break-all;">/${escapeHtml(card.slug)}</div>
+              <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px;word-break:break-all;">/c/${escapeHtml(card.slug)}</div>
+              <div class="card-stats">
+                <span class="card-stat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <strong>${views}</strong> vues
+                </span>
+                <span class="card-stat">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg>
+                  <strong>${clicks}</strong> clics
+                </span>
+              </div>
               <div class="card-actions">
-                <button class="btn-copy" onclick="copyLink('${escapeHtml(card.slug)}')">Copier le lien</button>
+                <button class="btn-copy" onclick="copyLink('${escapeHtml(card.slug)}')">Copier</button>
+                <button class="btn-edit" onclick="openEditModal('${card.id}')">Modifier</button>
                 <button class="btn-delete" onclick="deleteCard('${card.id}')">Supprimer</button>
               </div>
             </div>
@@ -670,6 +748,156 @@
       t.textContent = msg;
       t.className = 'toast visible ' + type;
       setTimeout(() => t.classList.remove('visible'), 3000);
+    }
+
+    // ========== EDIT CARD ==========
+    let editingCard = null;
+    let editSelectedFile = null;
+    let editSelectedAvatar = null;
+
+    function openEditModal(cardId) {
+      editingCard = cards.find(c => c.id === cardId);
+      if (!editingCard) return;
+
+      editSelectedFile = null;
+      editSelectedAvatar = null;
+      document.getElementById('editFileInput').value = '';
+      document.getElementById('editAvatarInput').value = '';
+      document.getElementById('btnSaveEdit').disabled = false;
+      document.getElementById('btnSaveEdit').textContent = 'Enregistrer';
+
+      // Pre-fill fields
+      document.getElementById('editCardTitle').value = editingCard.title || '';
+      document.getElementById('editCardPrice').value = (editingCard.price / 100).toString();
+      document.getElementById('editCardSlug').value = editingCard.slug || '';
+      updateEditSlugPreview();
+
+      // Show current media preview
+      const preview = document.getElementById('editUploadPreview');
+      if (editingCard.media_type === 'video') {
+        preview.innerHTML = '<video src="' + escapeHtml(editingCard.media_url) + '" muted autoplay loop playsinline style="width:100%;max-height:200px;object-fit:cover;"></video>';
+      } else {
+        preview.innerHTML = '<img src="' + escapeHtml(editingCard.media_url) + '" style="width:100%;max-height:200px;object-fit:cover;" alt="">';
+      }
+      preview.style.display = 'block';
+      const zone = document.getElementById('editUploadZone');
+      zone.classList.add('has-file');
+      zone.querySelector('p').textContent = 'Média actuel';
+
+      // Show current avatar
+      const avatarPreview = document.getElementById('editAvatarPreview');
+      if (editingCard.avatar_url) {
+        avatarPreview.innerHTML = '<img src="' + escapeHtml(editingCard.avatar_url) + '" alt="">';
+      } else {
+        avatarPreview.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+      }
+
+      document.getElementById('editModalOverlay').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModalOverlay').classList.remove('active');
+      editingCard = null;
+    }
+
+    // Close on overlay click
+    document.getElementById('editModalOverlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeEditModal();
+    });
+
+    function handleEditFileSelect(input) {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > 50 * 1024 * 1024) { showToast('Fichier trop volumineux (max 50 MB)', 'error'); return; }
+      editSelectedFile = file;
+      const zone = document.getElementById('editUploadZone');
+      zone.classList.add('has-file');
+      zone.querySelector('p').textContent = file.name;
+      const preview = document.getElementById('editUploadPreview');
+      preview.style.display = 'block';
+      if (file.type.startsWith('video/')) {
+        preview.innerHTML = '<video src="' + URL.createObjectURL(file) + '" muted autoplay loop playsinline style="width:100%;max-height:200px;object-fit:cover;"></video>';
+      } else {
+        preview.innerHTML = '<img src="' + URL.createObjectURL(file) + '" style="width:100%;max-height:200px;object-fit:cover;" alt="">';
+      }
+    }
+
+    function handleEditAvatarSelect(input) {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) { showToast('Photo trop volumineuse (max 5 MB)', 'error'); return; }
+      editSelectedAvatar = file;
+      document.getElementById('editAvatarPreview').innerHTML = '<img src="' + URL.createObjectURL(file) + '" alt="">';
+    }
+
+    function updateEditSlugPreview() {
+      const raw = document.getElementById('editCardSlug').value.trim();
+      const slug = sanitizeSlug(raw) || '...';
+      document.getElementById('editSlugUrl').textContent = window.location.origin + '/c/' + slug;
+    }
+
+    async function saveEditCard() {
+      if (!editingCard) return;
+
+      const price = Math.round(parseFloat(document.getElementById('editCardPrice').value) * 100);
+      if (!price || price < 100) return showToast('Prix minimum : 1 €', 'error');
+
+      const rawSlug = document.getElementById('editCardSlug').value.trim();
+      const slug = rawSlug ? sanitizeSlug(rawSlug) : editingCard.slug;
+      if (!slug) return showToast('Lien invalide', 'error');
+
+      // Check slug uniqueness if changed
+      if (slug !== editingCard.slug) {
+        const { data: existing } = await sb.from('cards').select('id').eq('slug', slug).maybeSingle();
+        if (existing) return showToast('Ce lien est déjà pris', 'error');
+      }
+
+      const btn = document.getElementById('btnSaveEdit');
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement...';
+
+      try {
+        const updates = {
+          title: document.getElementById('editCardTitle').value.trim() || null,
+          price: price,
+          slug: slug,
+        };
+
+        // Upload new media if selected
+        if (editSelectedFile) {
+          const ext = editSelectedFile.name.split('.').pop().toLowerCase();
+          const mediaType = editSelectedFile.type.startsWith('video/') ? 'video' : 'image';
+          const filePath = currentUser.id + '/' + Date.now() + '.' + ext;
+          const { error: uploadErr } = await sb.storage.from('media').upload(filePath, editSelectedFile, { cacheControl: '3600', upsert: false });
+          if (uploadErr) throw uploadErr;
+          const { data: urlData } = sb.storage.from('media').getPublicUrl(filePath);
+          updates.media_url = urlData.publicUrl;
+          updates.media_type = mediaType;
+        }
+
+        // Upload new avatar if selected
+        if (editSelectedAvatar) {
+          const avatarExt = editSelectedAvatar.name.split('.').pop().toLowerCase();
+          const avatarPath = currentUser.id + '/avatar-' + Date.now() + '.' + avatarExt;
+          const { error: avatarErr } = await sb.storage.from('media').upload(avatarPath, editSelectedAvatar, { cacheControl: '3600', upsert: false });
+          if (avatarErr) throw avatarErr;
+          const { data: avatarData } = sb.storage.from('media').getPublicUrl(avatarPath);
+          updates.avatar_url = avatarData.publicUrl;
+        }
+
+        const { error: updateErr } = await sb.from('cards').update(updates).eq('id', editingCard.id);
+        if (updateErr) throw updateErr;
+
+        closeEditModal();
+        showToast('Carte modifiée !', 'success');
+        await loadCards();
+        renderCards();
+      } catch (err) {
+        console.error('Edit card error:', err);
+        showToast('Erreur : ' + (err.message || 'Échec'), 'error');
+        btn.disabled = false;
+        btn.textContent = 'Enregistrer';
+      }
     }
 
     // ========== INIT ==========
