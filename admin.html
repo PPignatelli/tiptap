@@ -177,6 +177,22 @@
       font-size: 12px; font-weight: 600;
     }
 
+    .btn-delete-creator {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 12px; border-radius: var(--radius-xs);
+      border: 1px solid var(--color-border); background: var(--color-surface);
+      color: var(--color-text-tertiary); font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: var(--font);
+      transition: all var(--duration); white-space: nowrap;
+    }
+    .btn-delete-creator:hover {
+      border-color: var(--color-error); background: var(--color-error-light);
+      color: var(--color-error);
+    }
+    .btn-delete-creator svg { width: 14px; height: 14px; }
+
+    .action-buttons { display: flex; gap: 6px; align-items: center; }
+
     /* ===== LOADING ===== */
     #pageLoading {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -488,13 +504,17 @@
           : '<span class="text-muted">' + escapeHtml(t('Not set', 'Non renseigne')) + '</span>';
         var joined = formatDate(c.created_at);
 
-        var actionCell;
+        var paidBtn;
         if (unpaid > 0) {
-          actionCell = '<button class="btn-mark-paid" onclick="markAsPaid(\'' + escapeHtml(c.id) + '\')">' +
+          paidBtn = '<button class="btn-mark-paid" onclick="markAsPaid(\'' + escapeHtml(c.id) + '\')">' +
             escapeHtml(t('Mark as Paid', 'Marquer paye')) + '</button>';
         } else {
-          actionCell = '<span class="badge-paid">' + escapeHtml(t('Paid', 'Paye')) + '</span>';
+          paidBtn = '<span class="badge-paid">' + escapeHtml(t('Paid', 'Paye')) + '</span>';
         }
+        var deleteBtn = '<button class="btn-delete-creator" onclick="deleteCreator(\'' + escapeHtml(c.id) + '\', \'' + email + '\')">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>' +
+          '</button>';
+        var actionCell = '<div class="action-buttons">' + paidBtn + deleteBtn + '</div>';
 
         html += '<tr>' +
           '<td>' + name + '</td>' +
@@ -560,6 +580,32 @@
       } catch (err) {
         console.error('Mark as paid error:', err);
         showToast(t('Error marking as paid', 'Erreur lors du marquage'), 'error');
+      }
+    }
+
+    // ========== DELETE CREATOR ==========
+    async function deleteCreator(creatorId, email) {
+      var ok = confirm(t(
+        'DELETE account "' + email + '"?\n\nThis will permanently remove the user, all their cards, transactions, and data. This cannot be undone.',
+        'SUPPRIMER le compte "' + email + '" ?\n\nCela supprimera definitivement l\'utilisateur, toutes ses cartes, transactions et donnees. Cette action est irreversible.'
+      ));
+      if (!ok) return;
+
+      // Double confirm for safety
+      var ok2 = confirm(t(
+        'Are you absolutely sure? Type OK to confirm deletion of ' + email,
+        'Etes-vous absolument sur ? Cliquez OK pour confirmer la suppression de ' + email
+      ));
+      if (!ok2) return;
+
+      try {
+        var res = await sb.rpc('admin_delete_creator', { p_creator_id: creatorId });
+        if (res.error) throw res.error;
+        showToast(t('Account deleted', 'Compte supprime'), 'success');
+        await loadDashboard();
+      } catch (err) {
+        console.error('Delete creator error:', err);
+        showToast(t('Error deleting account', 'Erreur lors de la suppression'), 'error');
       }
     }
 
