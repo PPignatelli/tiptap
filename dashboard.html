@@ -358,6 +358,7 @@
       <div class="logo-wordmark">Tips<span>Tap</span></div>
       <div class="header-right">
         <span class="header-email" id="headerUser"></span>
+        <a href="/admin.html" id="adminLink" style="display:none;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:4px 10px;border-radius:9999px;background:var(--brand-light);color:var(--brand);text-decoration:none;">Admin</a>
         <button class="lang-toggle" onclick="toggleLang()" id="langBtn" aria-label="Switch language">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
           <span id="langLabel"></span>
@@ -499,6 +500,9 @@
         return;
       }
       document.getElementById('headerUser').textContent = currentUser.email;
+      if (currentUser.email === 'pignatellipierrelouis@gmail.com') {
+        document.getElementById('adminLink').style.display = '';
+      }
 
       // Greeting with name + random emoji
       const emojis = ['\u{1F44B}','\u{1F680}','\u{2728}','\u{1F525}','\u{1F389}','\u{1F31F}','\u{1F4AA}','\u{1F3AF}','\u{1F60E}','\u{26A1}','\u{1F4B0}','\u{1F308}','\u{1F381}','\u{1F9E1}','\u{1F64C}'];
